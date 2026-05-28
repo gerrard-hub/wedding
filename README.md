@@ -1,2 +1,2592 @@
+[index.html](https://github.com/user-attachments/files/28351383/index.html)
 # wedding
 wedding
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>모바일청첩장</title>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css"
+  />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "Pretendard Variable", Pretendard, -apple-system,
+        BlinkMacSystemFont, system-ui, sans-serif;
+      background: #07060C;
+      color: #F4F0E6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button { font-family: inherit; }
+
+    /* 페이지 프레임 — 모바일 폭 카드를 데스크탑에서도 보기 좋게 */
+    .page-frame {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 28px 16px 60px;
+      background:
+        radial-gradient(ellipse at 50% -10%, rgba(217,185,138,0.10) 0%, transparent 45%),
+        radial-gradient(ellipse at 80% 40%, rgba(120,90,160,0.06) 0%, transparent 50%),
+        #07060C;
+    }
+    .invite-card {
+      width: 100%;
+      max-width: 440px;
+      background: #0C0B12;
+      box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.6),
+        0 8px 24px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(217, 185, 138, 0.08);
+      overflow: hidden;
+    }
+    .page-foot {
+      margin-top: 22px;
+      color: rgba(244, 240, 230, 0.30);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+    }
+
+    /* 모바일에서는 카드 그림자/패딩 제거 */
+    @media (max-width: 480px) {
+      .page-frame { padding: 0; background: #0C0B12; }
+      .invite-card { box-shadow: none; max-width: 100%; }
+      .page-foot { display: none; }
+    }
+
+    /* 섹션 fade-up cascade */
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      animation: revealIn 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+    }
+    @keyframes revealIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 별빛 깜빡임 */
+    @keyframes starsTwinkle {
+      0%   { opacity: 0.55; }
+      50%  { opacity: 0.95; }
+      100% { opacity: 0.45; }
+    }
+
+    /* image-slot placeholder — 다크 톤에 맞춤 */
+    image-slot {
+      background: rgba(244, 240, 230, 0.04);
+    }
+    image-slot::part(placeholder) {
+      font-family: "Pretendard Variable", Pretendard, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: rgba(244, 240, 230, 0.50);
+    }
+
+    /* 입력 필드 placeholder — 다크 톤 */
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(244, 240, 230, 0.35);
+    }
+  </style>
+</head>
+<body>
+  <template id="__bundler_thumbnail">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+      <defs>
+        <radialGradient id="bg" cx="50%" cy="40%" r="70%">
+          <stop offset="0%" stop-color="#25221E"/>
+          <stop offset="60%" stop-color="#0F0E14"/>
+          <stop offset="100%" stop-color="#07060C"/>
+        </radialGradient>
+      </defs>
+      <rect width="400" height="400" fill="url(#bg)"/>
+      <!-- sparkles -->
+      <g fill="#D9B98A">
+        <circle cx="100" cy="90"  r="2" opacity="0.9"/>
+        <circle cx="300" cy="110" r="1.6" opacity="0.7"/>
+        <circle cx="320" cy="280" r="2" opacity="0.8"/>
+        <circle cx="80"  cy="300" r="1.4" opacity="0.6"/>
+        <circle cx="200" cy="60"  r="1.6" opacity="0.75"/>
+      </g>
+      <!-- firework burst -->
+      <g stroke="#F0D6A0" stroke-linecap="round" stroke-width="1.4" opacity="0.85">
+        <line x1="200" y1="170" x2="200" y2="130"/>
+        <line x1="200" y1="170" x2="240" y2="150"/>
+        <line x1="200" y1="170" x2="160" y2="150"/>
+        <line x1="200" y1="170" x2="245" y2="185"/>
+        <line x1="200" y1="170" x2="155" y2="185"/>
+        <line x1="200" y1="170" x2="225" y2="210"/>
+        <line x1="200" y1="170" x2="175" y2="210"/>
+      </g>
+      <circle cx="200" cy="170" r="3" fill="#FFD9A0"/>
+      <!-- ampersand initials -->
+      <text x="200" y="265" text-anchor="middle"
+        font-family="Georgia, serif" font-size="44"
+        fill="#F4F0E6" letter-spacing="6">M &amp; S</text>
+      <text x="200" y="305" text-anchor="middle"
+        font-family="sans-serif" font-size="11"
+        fill="#D9B98A" letter-spacing="6">WEDDING INVITATION</text>
+      <text x="200" y="335" text-anchor="middle"
+        font-family="sans-serif" font-size="10"
+        fill="rgba(244,240,230,0.5)" letter-spacing="4">2027 · 04 · 17</text>
+    </svg>
+  </template>
+
+  <div id="root"></div>
+
+  <script
+    src="https://unpkg.com/react@18.3.1/umd/react.development.js"
+    integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"
+    integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"
+    integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y"
+    crossorigin="anonymous"
+  ></script>
+
+
+  <script>
+/* BEGIN USAGE */
+/**
+ * <image-slot> — user-fillable image placeholder.
+ *
+ * Drop this into a deck, mockup, or page wherever you want the user to
+ * supply an image. You control the slot's shape and size; the user fills it
+ * by dragging an image file onto it (or clicking to browse). The dropped
+ * image persists across reloads via a .image-slots.state.json sidecar —
+ * same read-via-fetch / write-via-window.omelette pattern as
+ * design_canvas.jsx, so the filled slot shows on share links, downloaded
+ * zips, and PPTX export. Outside the omelette runtime the slot is read-only.
+ *
+ * The host bridge only allows sidecar writes at the project root, so the
+ * HTML that uses this component is assumed to live at the project root too
+ * (same constraint as design_canvas.jsx).
+ *
+ * Attributes:
+ *   id           Persistence key. REQUIRED for the drop to survive reload —
+ *                every slot on the page needs a distinct id.
+ *   shape        'rect' | 'rounded' | 'circle' | 'pill'   (default 'rounded')
+ *                'circle' applies 50% border-radius; on a non-square slot
+ *                that's an ellipse — set equal width and height for a true
+ *                circle.
+ *   radius       Corner radius in px for 'rounded'.       (default 12)
+ *   mask         Any CSS clip-path value. Overrides `shape` — use this for
+ *                hexagons, blobs, arbitrary polygons.
+ *   fit          object-fit: cover | contain | fill.       (default 'cover')
+ *                With cover (the default) double-clicking the filled slot
+ *                enters a reframe mode: the whole image spills past the mask
+ *                (translucent outside, opaque inside), drag to reposition,
+ *                corner-drag to scale. The crop persists alongside the image
+ *                in the sidecar. contain/fill stay static.
+ *   position     object-position for fit=contain|fill.     (default '50% 50%')
+ *   placeholder  Empty-state caption.                      (default 'Drop an image')
+ *   src          Optional initial/fallback image URL. A user drop overrides
+ *                it; clearing the drop reveals src again.
+ *
+ * Size and layout come from ordinary CSS on the element — width/height
+ * inline or from a parent grid — so it composes with any layout.
+ *
+ * Usage:
+ *   <image-slot id="hero"   style="width:800px;height:450px" shape="rounded" radius="20"
+ *               placeholder="Drop a hero image"></image-slot>
+ *   <image-slot id="avatar" style="width:120px;height:120px" shape="circle"></image-slot>
+ *   <image-slot id="kite"   style="width:300px;height:300px"
+ *               mask="polygon(50% 0, 100% 50%, 50% 100%, 0 50%)"></image-slot>
+ */
+/* END USAGE */
+
+(() => {
+  const STATE_FILE = '.image-slots.state.json';
+  // 2× a ~600px slot in a 1920-wide deck — retina-sharp without making the
+  // sidecar enormous. A 1200px WebP at q=0.85 is ~150-300KB.
+  const MAX_DIM = 1200;
+  // Raster formats only. SVG is excluded (can carry script; createImageBitmap
+  // on SVG blobs is inconsistent). GIF is excluded because the canvas
+  // re-encode keeps only the first frame, so an animated GIF would silently
+  // go still — better to reject than surprise.
+  const ACCEPT = ['image/png', 'image/jpeg', 'image/webp', 'image/avif'];
+
+  // ── Shared sidecar store ────────────────────────────────────────────────
+  // One fetch + immediate write-on-change for every <image-slot> on the
+  // page. Reads via fetch() so viewing works anywhere the HTML and sidecar
+  // are served together; writes go through window.omelette.writeFile, which
+  // the host allowlists to *.state.json basenames only.
+  const subs = new Set();
+  let slots = {};
+  // ids explicitly cleared before the sidecar fetch resolved — otherwise
+  // the merge below can't tell "never set" from "just deleted" and would
+  // resurrect the sidecar's stale value.
+  const tombstones = new Set();
+  let loaded = false;
+  let loadP = null;
+
+  function load() {
+    if (loadP) return loadP;
+    loadP = fetch(STATE_FILE)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => {
+        // Merge: sidecar loses to any in-memory change that raced ahead of
+        // the fetch (drop or clear) so neither is clobbered by hydration.
+        if (j && typeof j === 'object') {
+          const merged = Object.assign({}, j, slots);
+          // A framing-only write that raced ahead of hydration must not
+          // drop a user image that's only on disk — inherit u from the
+          // sidecar for any in-memory entry that lacks one.
+          for (const k in slots) {
+            if (merged[k] && !merged[k].u && j[k]) {
+              merged[k].u = typeof j[k] === 'string' ? j[k] : j[k].u;
+            }
+          }
+          for (const id of tombstones) delete merged[id];
+          slots = merged;
+        }
+        tombstones.clear();
+      })
+      .catch(() => {})
+      .then(() => { loaded = true; subs.forEach((fn) => fn()); });
+    return loadP;
+  }
+
+  // Serialize writes so two near-simultaneous drops on different slots
+  // can't reorder at the backend and leave the sidecar with only the
+  // first. A save requested mid-flight just marks dirty and re-fires on
+  // completion with the then-current slots.
+  let saving = false;
+  let saveDirty = false;
+  function save() {
+    if (saving) { saveDirty = true; return; }
+    const w = window.omelette && window.omelette.writeFile;
+    if (!w) return;
+    saving = true;
+    Promise.resolve(w(STATE_FILE, JSON.stringify(slots)))
+      .catch(() => {})
+      .then(() => { saving = false; if (saveDirty) { saveDirty = false; save(); } });
+  }
+
+  const S_MAX = 5;
+  const clampS = (s) => Math.max(1, Math.min(S_MAX, s));
+
+  // Normalize a stored slot value. Pre-reframe sidecars stored a bare
+  // data-URL string; newer ones store {u, s, x, y}. Either shape is valid.
+  function getSlot(id) {
+    const v = slots[id];
+    if (!v) return null;
+    return typeof v === 'string' ? { u: v, s: 1, x: 0, y: 0 } : v;
+  }
+
+  function setSlot(id, val) {
+    if (!id) return;
+    if (val) { slots[id] = val; tombstones.delete(id); }
+    else { delete slots[id]; if (!loaded) tombstones.add(id); }
+    subs.forEach((fn) => fn());
+    // A drop is rare + high-value — write immediately so nav-away can't lose
+    // it. Gate on the initial read so we don't overwrite a sidecar we haven't
+    // merged yet; the merge in load() keeps this change once the read lands.
+    if (loaded) save(); else load().then(save);
+  }
+
+  // ── Image downscale ─────────────────────────────────────────────────────
+  // Encode through a canvas so the sidecar carries resized bytes, not the
+  // raw upload. Longest side is capped at 2× the slot's rendered width
+  // (retina) and at MAX_DIM. WebP keeps alpha and is ~10× smaller than PNG
+  // for photos, so there's no need for per-image format picking.
+  async function toDataUrl(file, targetW) {
+    const bitmap = await createImageBitmap(file);
+    try {
+      const cap = Math.min(MAX_DIM, Math.max(1, Math.round(targetW * 2)) || MAX_DIM);
+      const scale = Math.min(1, cap / Math.max(bitmap.width, bitmap.height));
+      const w = Math.max(1, Math.round(bitmap.width * scale));
+      const h = Math.max(1, Math.round(bitmap.height * scale));
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(bitmap, 0, 0, w, h);
+      return canvas.toDataURL('image/webp', 0.85);
+    } finally {
+      bitmap.close && bitmap.close();
+    }
+  }
+
+  // ── Custom element ──────────────────────────────────────────────────────
+  const stylesheet =
+    ':host{display:inline-block;position:relative;vertical-align:top;' +
+    '  font:13px/1.3 system-ui,-apple-system,sans-serif;color:rgba(0,0,0,.55);width:240px;height:160px}' +
+    '.frame{position:absolute;inset:0;overflow:hidden;background:rgba(0,0,0,.04)}' +
+    // .frame img (clipped) and .spill (unclipped ghost + handles) share the
+    // same left/top/width/height in frame-%, computed by _applyView(), so the
+    // inside-mask crop and the outside-mask spill stay pixel-aligned.
+    '.frame img{position:absolute;max-width:none;transform:translate(-50%,-50%);' +
+    '  -webkit-user-drag:none;user-select:none;touch-action:none}' +
+    // Reframe mode (double-click): the full image spills past the mask. The
+    // spill layer is sized to the IMAGE bounds so its corners are where the
+    // resize handles belong. The ghost <img> inside is translucent; the real
+    // clipped <img> underneath shows the opaque in-mask crop.
+    '.spill{position:absolute;transform:translate(-50%,-50%);display:none;z-index:1;' +
+    '  cursor:grab;touch-action:none}' +
+    ':host([data-panning]) .spill{cursor:grabbing}' +
+    '.spill .ghost{position:absolute;inset:0;width:100%;height:100%;opacity:.35;' +
+    '  pointer-events:none;-webkit-user-drag:none;user-select:none;' +
+    '  box-shadow:0 0 0 1px rgba(0,0,0,.2),0 12px 32px rgba(0,0,0,.2)}' +
+    '.spill .handle{position:absolute;width:12px;height:12px;border-radius:50%;' +
+    '  background:#fff;box-shadow:0 0 0 1.5px #c96442,0 1px 3px rgba(0,0,0,.3);' +
+    '  transform:translate(-50%,-50%)}' +
+    '.spill .handle[data-c=nw]{left:0;top:0;cursor:nwse-resize}' +
+    '.spill .handle[data-c=ne]{left:100%;top:0;cursor:nesw-resize}' +
+    '.spill .handle[data-c=sw]{left:0;top:100%;cursor:nesw-resize}' +
+    '.spill .handle[data-c=se]{left:100%;top:100%;cursor:nwse-resize}' +
+    ':host([data-reframe]){z-index:10}' +
+    ':host([data-reframe]) .spill{display:block}' +
+    ':host([data-reframe]) .frame{box-shadow:0 0 0 2px #c96442}' +
+    '.empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;' +
+    '  justify-content:center;gap:6px;text-align:center;padding:12px;box-sizing:border-box;' +
+    '  cursor:pointer;user-select:none}' +
+    '.empty svg{opacity:.45}' +
+    '.empty .cap{max-width:90%;font-weight:500;letter-spacing:.01em}' +
+    '.empty .sub{font-size:11px}' +
+    '.empty .sub u{text-underline-offset:2px;text-decoration-color:rgba(0,0,0,.25)}' +
+    '.empty:hover .sub u{color:rgba(0,0,0,.75);text-decoration-color:currentColor}' +
+    ':host([data-over]) .frame{outline:2px solid #c96442;outline-offset:-2px;' +
+    '  background:rgba(201,100,66,.10)}' +
+    '.ring{position:absolute;inset:0;pointer-events:none;border:1.5px dashed rgba(0,0,0,.25);' +
+    '  transition:border-color .12s}' +
+    ':host([data-over]) .ring{border-color:#c96442}' +
+    ':host([data-filled]) .ring{display:none}' +
+    // Controls sit BELOW the mask (top:100%), absolutely positioned so the
+    // author-declared slot height is unaffected. The gap is padding, not a
+    // top offset, so the hover target stays contiguous with the frame.
+    '.ctl{position:absolute;top:100%;left:50%;transform:translateX(-50%);padding-top:8px;' +
+    '  display:flex;gap:6px;opacity:0;pointer-events:none;transition:opacity .12s;z-index:2;' +
+    '  white-space:nowrap}' +
+    ':host([data-filled][data-editable]:hover) .ctl,:host([data-reframe]) .ctl' +
+    '  {opacity:1;pointer-events:auto}' +
+    '.ctl button{appearance:none;border:0;border-radius:6px;padding:5px 10px;cursor:pointer;' +
+    '  background:rgba(0,0,0,.65);color:#fff;font:11px/1 system-ui,-apple-system,sans-serif;' +
+    '  backdrop-filter:blur(6px)}' +
+    '.ctl button:hover{background:rgba(0,0,0,.8)}' +
+    '.err{position:absolute;left:8px;bottom:8px;right:8px;color:#b3261e;font-size:11px;' +
+    '  background:rgba(255,255,255,.85);padding:4px 6px;border-radius:5px;pointer-events:none}';
+
+  const icon =
+    '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+    'stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' +
+    '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>' +
+    '<path d="m21 15-5-5L5 21"/></svg>';
+
+  class ImageSlot extends HTMLElement {
+    static get observedAttributes() {
+      return ['shape', 'radius', 'mask', 'fit', 'position', 'placeholder', 'src', 'id'];
+    }
+
+    constructor() {
+      super();
+      const root = this.attachShadow({ mode: 'open' });
+      // .spill and .ctl sit OUTSIDE .frame so overflow:hidden + border-radius
+      // on the frame (circle, pill, rounded) can't clip them.
+      root.innerHTML =
+        '<style>' + stylesheet + '</style>' +
+        '<div class="frame" part="frame">' +
+        '  <img part="image" alt="" draggable="false" style="display:none">' +
+        '  <div class="empty" part="empty">' + icon +
+        '    <div class="cap"></div>' +
+        '    <div class="sub">or <u>browse files</u></div></div>' +
+        '  <div class="ring" part="ring"></div>' +
+        '</div>' +
+        '<div class="spill">' +
+        '  <img class="ghost" alt="" draggable="false">' +
+        '  <div class="handle" data-c="nw"></div><div class="handle" data-c="ne"></div>' +
+        '  <div class="handle" data-c="sw"></div><div class="handle" data-c="se"></div>' +
+        '</div>' +
+        '<div class="ctl"><button data-act="replace" title="Replace image">Replace</button>' +
+        '  <button data-act="clear" title="Remove image">Remove</button></div>' +
+        '<input type="file" accept="' + ACCEPT.join(',') + '" hidden>';
+      this._frame = root.querySelector('.frame');
+      this._ring = root.querySelector('.ring');
+      this._img = root.querySelector('.frame img');
+      this._empty = root.querySelector('.empty');
+      this._cap = root.querySelector('.cap');
+      this._sub = root.querySelector('.sub');
+      this._spill = root.querySelector('.spill');
+      this._ghost = root.querySelector('.ghost');
+      this._err = null;
+      this._input = root.querySelector('input');
+      this._depth = 0;
+      this._gen = 0;
+      this._view = { s: 1, x: 0, y: 0 };
+      this._subFn = () => this._render();
+      // Shadow-DOM listeners live with the shadow DOM — bound once here so
+      // disconnect/reconnect (e.g. React remount) doesn't stack handlers.
+      this._empty.addEventListener('click', () => this._input.click());
+      root.addEventListener('click', (e) => {
+        const act = e.target && e.target.getAttribute && e.target.getAttribute('data-act');
+        if (act === 'replace') { this._exitReframe(true); this._input.click(); }
+        if (act === 'clear') {
+          this._exitReframe(false);
+          this._gen++;
+          this._local = null;
+          if (this.id) setSlot(this.id, null); else this._render();
+        }
+      });
+      this._input.addEventListener('change', () => {
+        const f = this._input.files && this._input.files[0];
+        if (f) this._ingest(f);
+        this._input.value = '';
+      });
+      // naturalWidth/Height aren't known until load — re-apply so the cover
+      // baseline is computed from real dimensions, not the 100%×100% fallback.
+      this._img.addEventListener('load', () => this._applyView());
+      // Gated on editable + fit=cover so share links and contain/fill slots
+      // stay static.
+      this.addEventListener('dblclick', (e) => {
+        if (!this.hasAttribute('data-editable') || !this._reframes()) return;
+        e.preventDefault();
+        if (this.hasAttribute('data-reframe')) this._exitReframe(true);
+        else this._enterReframe();
+      });
+      // Pan + resize both originate on the spill layer. A handle pointerdown
+      // drives an aspect-locked resize anchored at the opposite corner; any
+      // other pointerdown on the spill pans. Offsets are frame-% so a
+      // reframed slot survives responsive resize / PPTX export.
+      this._spill.addEventListener('pointerdown', (e) => {
+        if (e.button !== 0 || !this.hasAttribute('data-reframe')) return;
+        e.preventDefault();
+        e.stopPropagation();
+        this._spill.setPointerCapture(e.pointerId);
+        const rect = this.getBoundingClientRect();
+        const fw = rect.width || 1, fh = rect.height || 1;
+        const corner = e.target.getAttribute && e.target.getAttribute('data-c');
+        let move;
+        if (corner) {
+          // Resize about the OPPOSITE corner. Viewport-px throughout (rect
+          // fw/fh, not clientWidth) so the math survives a transform:scale()
+          // ancestor — deck_stage renders slides scaled-to-fit.
+          const iw = this._img.naturalWidth || 1, ih = this._img.naturalHeight || 1;
+          const base = Math.max(fw / iw, fh / ih);
+          const sx = corner.includes('e') ? 1 : -1;
+          const sy = corner.includes('s') ? 1 : -1;
+          const s0 = this._view.s;
+          const w0 = iw * base * s0, h0 = ih * base * s0;
+          const cx0 = (50 + this._view.x) / 100 * fw;
+          const cy0 = (50 + this._view.y) / 100 * fh;
+          const ox = cx0 - sx * w0 / 2, oy = cy0 - sy * h0 / 2;
+          const diag0 = Math.hypot(w0, h0);
+          const ux = sx * w0 / diag0, uy = sy * h0 / diag0;
+          move = (ev) => {
+            const proj = (ev.clientX - rect.left - ox) * ux +
+                         (ev.clientY - rect.top - oy) * uy;
+            const s = clampS(s0 * proj / diag0);
+            const d = diag0 * s / s0;
+            this._view.s = s;
+            this._view.x = (ox + ux * d / 2) / fw * 100 - 50;
+            this._view.y = (oy + uy * d / 2) / fh * 100 - 50;
+            this._clampView();
+            this._applyView();
+          };
+        } else {
+          this.setAttribute('data-panning', '');
+          const start = { px: e.clientX, py: e.clientY, x: this._view.x, y: this._view.y };
+          move = (ev) => {
+            this._view.x = start.x + (ev.clientX - start.px) / fw * 100;
+            this._view.y = start.y + (ev.clientY - start.py) / fh * 100;
+            this._clampView();
+            this._applyView();
+          };
+        }
+        const up = () => {
+          try { this._spill.releasePointerCapture(e.pointerId); } catch {}
+          this._spill.removeEventListener('pointermove', move);
+          this._spill.removeEventListener('pointerup', up);
+          this._spill.removeEventListener('pointercancel', up);
+          this.removeAttribute('data-panning');
+          this._dragUp = null;
+        };
+        // Stashed so _exitReframe (Escape / outside-click mid-drag) can
+        // tear the capture + listeners down synchronously.
+        this._dragUp = up;
+        this._spill.addEventListener('pointermove', move);
+        this._spill.addEventListener('pointerup', up);
+        this._spill.addEventListener('pointercancel', up);
+      });
+      // Wheel zoom stays available inside reframe mode as a trackpad nicety —
+      // zooms toward the cursor (offset' = cursor·(1-k) + offset·k).
+      this.addEventListener('wheel', (e) => {
+        if (!this.hasAttribute('data-reframe')) return;
+        e.preventDefault();
+        const r = this.getBoundingClientRect();
+        const cx = (e.clientX - r.left) / r.width * 100 - 50;
+        const cy = (e.clientY - r.top) / r.height * 100 - 50;
+        const prev = this._view.s;
+        const next = clampS(prev * Math.pow(1.0015, -e.deltaY));
+        if (next === prev) return;
+        const k = next / prev;
+        this._view.s = next;
+        this._view.x = cx * (1 - k) + this._view.x * k;
+        this._view.y = cy * (1 - k) + this._view.y * k;
+        this._clampView();
+        this._applyView();
+      }, { passive: false });
+    }
+
+    connectedCallback() {
+      // Warn once per page — an id-less slot works for the session but
+      // cannot persist, and two id-less slots would share nothing.
+      if (!this.id && !ImageSlot._warned) {
+        ImageSlot._warned = true;
+        console.warn('<image-slot> without an id will not persist its dropped image.');
+      }
+      this.addEventListener('dragenter', this);
+      this.addEventListener('dragover', this);
+      this.addEventListener('dragleave', this);
+      this.addEventListener('drop', this);
+      subs.add(this._subFn);
+      // width%/height% in _applyView encode the frame aspect at call time —
+      // a host resize (responsive grid, pane divider) would stretch the
+      // image until the next _render. Re-render on size change: _render()
+      // re-seeds _view from stored before clamp/apply, so a shrink→grow
+      // cycle round-trips instead of ratcheting x/y toward the narrower
+      // frame's clamp range.
+      this._ro = new ResizeObserver(() => this._render());
+      this._ro.observe(this);
+      load();
+      this._render();
+    }
+
+    disconnectedCallback() {
+      subs.delete(this._subFn);
+      this.removeEventListener('dragenter', this);
+      this.removeEventListener('dragover', this);
+      this.removeEventListener('dragleave', this);
+      this.removeEventListener('drop', this);
+      if (this._ro) { this._ro.disconnect(); this._ro = null; }
+      this._exitReframe(false);
+    }
+
+    _enterReframe() {
+      if (this.hasAttribute('data-reframe')) return;
+      this.setAttribute('data-reframe', '');
+      this._applyView();
+      // Close on click outside (the spill handler stopPropagation()s so
+      // in-image drags don't reach this) and on Escape. Listeners are held
+      // on the instance so _exitReframe / disconnectedCallback can detach
+      // exactly what was attached.
+      this._outside = (e) => {
+        if (e.composedPath && e.composedPath().includes(this)) return;
+        this._exitReframe(true);
+      };
+      this._esc = (e) => { if (e.key === 'Escape') this._exitReframe(true); };
+      document.addEventListener('pointerdown', this._outside, true);
+      document.addEventListener('keydown', this._esc, true);
+    }
+
+    _exitReframe(commit) {
+      if (!this.hasAttribute('data-reframe')) return;
+      if (this._dragUp) this._dragUp();
+      this.removeAttribute('data-reframe');
+      this.removeAttribute('data-panning');
+      if (this._outside) document.removeEventListener('pointerdown', this._outside, true);
+      if (this._esc) document.removeEventListener('keydown', this._esc, true);
+      this._outside = this._esc = null;
+      if (commit) this._commitView();
+    }
+
+    attributeChangedCallback() { if (this.shadowRoot) this._render(); }
+
+    // handleEvent — one listener object for all four drag events keeps the
+    // add/remove symmetric and the depth counter correct.
+    handleEvent(e) {
+      if (e.type === 'dragenter' || e.type === 'dragover') {
+        // Without preventDefault the browser never fires 'drop'.
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
+        if (e.type === 'dragenter') this._depth++;
+        this.setAttribute('data-over', '');
+      } else if (e.type === 'dragleave') {
+        // dragenter/leave fire for every descendant crossing — count depth
+        // so hovering the icon inside the empty state doesn't flicker.
+        if (--this._depth <= 0) { this._depth = 0; this.removeAttribute('data-over'); }
+      } else if (e.type === 'drop') {
+        e.preventDefault();
+        e.stopPropagation();
+        this._depth = 0;
+        this.removeAttribute('data-over');
+        const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+        if (f) this._ingest(f);
+      }
+    }
+
+    async _ingest(file) {
+      this._setError(null);
+      if (!file || ACCEPT.indexOf(file.type) < 0) {
+        this._setError('Drop a PNG, JPEG, WebP, or AVIF image.');
+        return;
+      }
+      // toDataUrl can take hundreds of ms on a large photo. A Clear or a
+      // newer drop during that window would be clobbered when this await
+      // resumes — bump + capture a generation so stale encodes bail.
+      const gen = ++this._gen;
+      try {
+        const w = this.clientWidth || this.offsetWidth || MAX_DIM;
+        const url = await toDataUrl(file, w);
+        if (gen !== this._gen) return;
+        // Only exit reframe once the new image is in hand — a rejected type
+        // or decode failure leaves the in-progress crop untouched.
+        this._exitReframe(false);
+        const val = { u: url, s: 1, x: 0, y: 0 };
+        setSlot(this.id || '', val);
+        // Keep a session-local copy for id-less slots so the drop still
+        // shows, even though it cannot persist.
+        if (!this.id) { this._local = val; this._render(); }
+      } catch (err) {
+        if (gen !== this._gen) return;
+        this._setError('Could not read that image.');
+        console.warn('<image-slot> ingest failed:', err);
+      }
+    }
+
+    _setError(msg) {
+      if (this._err) { this._err.remove(); this._err = null; }
+      if (!msg) return;
+      const d = document.createElement('div');
+      d.className = 'err'; d.textContent = msg;
+      this.shadowRoot.appendChild(d);
+      this._err = d;
+      setTimeout(() => { if (this._err === d) { d.remove(); this._err = null; } }, 3000);
+    }
+
+    // Reframing (pan/resize) is only meaningful for fit=cover — contain/fill
+    // keep the old object-fit path and double-click is a no-op.
+    _reframes() {
+      return this.hasAttribute('data-filled') &&
+        (this.getAttribute('fit') || 'cover') === 'cover';
+    }
+
+    // Cover-baseline geometry, shared by clamp/apply/resize. Null until the
+    // img has loaded (naturalWidth is 0 before that) or when the slot has no
+    // layout box — ResizeObserver fires with a 0×0 rect under display:none,
+    // and clamping against a degenerate 1×1 frame would silently pull the
+    // stored pan toward zero.
+    _geom() {
+      const iw = this._img.naturalWidth, ih = this._img.naturalHeight;
+      const fw = this.clientWidth, fh = this.clientHeight;
+      if (!iw || !ih || !fw || !fh) return null;
+      return { iw, ih, fw, fh, base: Math.max(fw / iw, fh / ih) };
+    }
+
+    _clampView() {
+      // Pan range on each axis is half the overflow past the frame edge.
+      const g = this._geom();
+      if (!g) return;
+      const mx = Math.max(0, (g.iw * g.base * this._view.s / g.fw - 1) * 50);
+      const my = Math.max(0, (g.ih * g.base * this._view.s / g.fh - 1) * 50);
+      this._view.x = Math.max(-mx, Math.min(mx, this._view.x));
+      this._view.y = Math.max(-my, Math.min(my, this._view.y));
+    }
+
+    _applyView() {
+      const g = this._geom();
+      const fit = this.getAttribute('fit') || 'cover';
+      if (fit !== 'cover' || !g) {
+        // Non-cover, or dimensions not known yet (before img load).
+        this._img.style.width = '100%';
+        this._img.style.height = '100%';
+        this._img.style.left = '50%';
+        this._img.style.top = '50%';
+        this._img.style.objectFit = fit;
+        this._img.style.objectPosition = this.getAttribute('position') || '50% 50%';
+        return;
+      }
+      // Cover baseline: img fills the frame on its tighter axis at s=1, so
+      // pan works immediately on the overflowing axis without zooming first.
+      // Width/height and left/top are all frame-% — depends only on the
+      // frame aspect ratio, so a responsive resize keeps the same crop. The
+      // spill layer mirrors the same box so its corners = image corners.
+      const k = g.base * this._view.s;
+      const w = (g.iw * k / g.fw * 100) + '%';
+      const h = (g.ih * k / g.fh * 100) + '%';
+      const l = (50 + this._view.x) + '%';
+      const t = (50 + this._view.y) + '%';
+      this._img.style.width = w; this._img.style.height = h;
+      this._img.style.left = l; this._img.style.top = t;
+      this._img.style.objectFit = '';
+      this._spill.style.width = w; this._spill.style.height = h;
+      this._spill.style.left = l; this._spill.style.top = t;
+    }
+
+    _commitView() {
+      const v = { s: this._view.s, x: this._view.x, y: this._view.y };
+      if (this._userUrl) v.u = this._userUrl;
+      // Framing-only (no u) persists too so an author-src slot remembers its
+      // crop; clearing the sidecar still falls through to src=.
+      if (this.id) setSlot(this.id, v);
+      else { this._local = v; }
+    }
+
+    _render() {
+      // Shape / mask. Presets use border-radius so the dashed ring can
+      // follow the rounded outline; clip-path is only applied for an
+      // explicit `mask` (the ring is hidden there since a rectangle
+      // dashed border chopped by an arbitrary polygon looks broken).
+      const mask = this.getAttribute('mask');
+      const shape = (this.getAttribute('shape') || 'rounded').toLowerCase();
+      let radius = '';
+      if (shape === 'circle') radius = '50%';
+      else if (shape === 'pill') radius = '9999px';
+      else if (shape === 'rounded') {
+        const n = parseFloat(this.getAttribute('radius'));
+        radius = (Number.isFinite(n) ? n : 12) + 'px';
+      }
+      this._frame.style.borderRadius = mask ? '' : radius;
+      this._frame.style.clipPath = mask || '';
+      this._ring.style.borderRadius = mask ? '' : radius;
+      this._ring.style.display = mask ? 'none' : '';
+
+      // Controls and reframe entry gate on this so share links stay read-only.
+      const editable = !!(window.omelette && window.omelette.writeFile);
+      this.toggleAttribute('data-editable', editable);
+      this._sub.style.display = editable ? '' : 'none';
+
+      // Content. The sidecar is also writable by the agent's write_file
+      // tool, so its value isn't guaranteed canvas-originated — only accept
+      // data:image/ URLs from it. The `src` attribute is author-controlled
+      // (Claude wrote it into the HTML) so it passes through unchanged.
+      let stored = this.id ? getSlot(this.id) : this._local;
+      if (stored && stored.u && !/^data:image\//i.test(stored.u)) stored = null;
+      const srcAttr = this.getAttribute('src') || '';
+      this._userUrl = (stored && stored.u) || null;
+      const url = this._userUrl || srcAttr;
+      // Don't clobber an in-flight reframe with a store-triggered re-render.
+      if (!this.hasAttribute('data-reframe')) {
+        this._view = {
+          s: stored && Number.isFinite(stored.s) ? clampS(stored.s) : 1,
+          x: stored && Number.isFinite(stored.x) ? stored.x : 0,
+          y: stored && Number.isFinite(stored.y) ? stored.y : 0,
+        };
+      }
+      this._cap.textContent = this.getAttribute('placeholder') || 'Drop an image';
+      // Toggle via style.display — the [hidden] attribute alone loses to
+      // the display:flex / display:block rules in the stylesheet above.
+      if (url) {
+        if (this._img.getAttribute('src') !== url) {
+          this._img.src = url;
+          this._ghost.src = url;
+        }
+        this._img.style.display = 'block';
+        this._empty.style.display = 'none';
+        this.setAttribute('data-filled', '');
+        this._clampView();
+        this._applyView();
+      } else {
+        this._img.style.display = 'none';
+        this._img.removeAttribute('src');
+        this._ghost.removeAttribute('src');
+        this._empty.style.display = 'flex';
+        this.removeAttribute('data-filled');
+      }
+    }
+  }
+
+  if (!customElements.get('image-slot')) {
+    customElements.define('image-slot', ImageSlot);
+  }
+})();
+
+  </script>
+
+  <script type="text/babel" data-presets="react">
+// themes.jsx — 결혼 정보 데이터 + 3가지 테마 정의
+// 데이터는 임시 예시. 실제 정보로 교체하면 됩니다.
+
+const WEDDING_DATA = {
+  groom: {
+    name: "김민준",
+    en: "KIM MIN JUN",
+    role: "장남",
+    father: "김도현",
+    mother: "박은영",
+    phone: "010-1234-5678",
+  },
+  bride: {
+    name: "이수연",
+    en: "LEE SU YEON",
+    role: "장녀",
+    father: "이재훈",
+    mother: "최미정",
+    phone: "010-9876-5432",
+  },
+  date: {
+    iso: "2027-04-17T13:00:00+09:00",
+    dateText: "2027. 04. 17",
+    longText: "2027년 4월 17일 토요일 오후 1시",
+    weekday: "SATURDAY",
+    y: 2027, m: 4, d: 17, hh: 13, mm: 0,
+  },
+  venue: {
+    name: "더채플앳논현",
+    hall: "5층 그레이스홀",
+    address: "서울특별시 강남구 논현로 535",
+    addressDetail: "지하철 7호선 학동역 4번 출구 도보 5분",
+    tel: "02-000-0000",
+    lat: 37.5118, lng: 127.0316,
+  },
+  greeting: {
+    title: "모시는 글",
+    body: [
+      "서로 다른 길을 걷던 두 사람이",
+      "이제 같은 곳을 바라보며",
+      "한 길을 걷고자 합니다.",
+      "",
+      "오랜 시간 곁에서 지켜봐 주신",
+      "귀한 걸음 모시어",
+      "저희의 시작을 함께 나누고 싶습니다.",
+    ],
+  },
+  accounts: {
+    groom: [
+      { who: "신랑 김민준", bank: "국민은행", number: "123456-78-901234" },
+      { who: "아버지 김도현", bank: "신한은행", number: "110-234-567890" },
+      { who: "어머니 박은영", bank: "우리은행", number: "1002-345-678901" },
+    ],
+    bride: [
+      { who: "신부 이수연", bank: "카카오뱅크", number: "3333-12-3456789" },
+      { who: "아버지 이재훈", bank: "하나은행", number: "111-222-333444" },
+      { who: "어머니 최미정", bank: "농협", number: "301-1234-5678-90" },
+    ],
+  },
+  transit: [
+    { kind: "지하철", desc: "7호선 학동역 4번 출구 도보 5분 / 신분당선 강남구청역 3번 출구 도보 7분" },
+    { kind: "버스",   desc: "간선 145 · 240 · 362 · 472 / 지선 4318 · 4419 — 영동시장 정류장 하차" },
+    { kind: "주차",   desc: "건물 지하주차장 2시간 무료 (이후 30분당 2,000원). 주차 공간이 협소하니 대중교통 권장" },
+  ],
+  song: {
+    // 실제 음원 파일은 여기에 경로를 넣어주세요. (예: "music/our-song.mp3")
+    src: "",
+    title: "Canon in D",
+    artist: "J. Pachelbel · 임시 선곡",
+  },
+};
+
+// 3가지 테마 — Pretendard 한 가지로 두고 굵기/자간/팔레트로 무드를 분리합니다.
+const THEMES = [
+  {
+    id: "warm",
+    name: "A · 웜 샌드",
+    sub: "베이지 + 테라코타, 따뜻하고 정중한 클래식",
+    palette: {
+      bg: "#F2EADC",
+      panel: "#FBF6EB",
+      panelAlt: "#EBDFC7",
+      text: "#3A2E22",
+      textSoft: "#5A4A38",
+      textMuted: "#8C7A65",
+      accent: "#A57852",
+      accentDeep: "#7C5232",
+      onAccent: "#FFFFFF",
+      hairline: "#D9C6A6",
+      stroke: "#C9B392",
+      noticeBg: "#FCEFE0",
+      noticeBorder: "#D89A66",
+    },
+    headingWeight: 400,
+    headingTracking: "0.03em",
+    headingScale: 1.0,
+    bodyWeight: 350,
+    style: "classic",
+    photoShape: "rounded",
+    photoRadius: 6,
+    sectionPad: "60px 28px",
+    accentDecor: "frame", // 얇은 사각형 보더
+  },
+  {
+    id: "sage",
+    name: "B · 세이지 가든",
+    sub: "세이지 그린 + 아이보리, 잎사귀 모티프의 보태니컬",
+    palette: {
+      bg: "#EDEBE0",
+      panel: "#FAF8EF",
+      panelAlt: "#DDDDC8",
+      text: "#2C332A",
+      textSoft: "#4A5145",
+      textMuted: "#6E7466",
+      accent: "#6F806A",
+      accentDeep: "#4A5847",
+      onAccent: "#FFFFFF",
+      hairline: "#C8CDB8",
+      stroke: "#A9B59F",
+      noticeBg: "#E6E9D8",
+      noticeBorder: "#7A8C72",
+    },
+    headingWeight: 500,
+    headingTracking: "0.02em",
+    headingScale: 1.0,
+    bodyWeight: 400,
+    style: "botanical",
+    photoShape: "rect",
+    photoRadius: 0,
+    sectionPad: "56px 28px",
+    accentDecor: "leaf",
+  },
+  {
+    id: "mono",
+    name: "C · 나이트 에디토리얼",
+    sub: "딥 나이트 + 연한 골드, 통일된 다크 에디토리얼",
+    palette: {
+      bg:           "#0C0B12",
+      panel:        "#13121A",
+      panelAlt:     "#191825",
+      text:         "#F4F0E6",
+      textSoft:     "rgba(244,240,230,0.78)",
+      textMuted:    "rgba(244,240,230,0.48)",
+      accent:       "#D9B98A",
+      accentDeep:   "#F0D6A0",
+      onAccent:     "#13121A",
+      hairline:     "rgba(244,240,230,0.12)",
+      stroke:       "rgba(244,240,230,0.26)",
+      noticeBg:     "rgba(217,185,138,0.08)",
+      noticeBorder: "#D9B98A",
+    },
+    headingWeight: 600,
+    headingTracking: "0.22em",
+    headingScale: 0.86,
+    bodyWeight: 400,
+    style: "editorial",
+    photoShape: "rect",
+    photoRadius: 0,
+    sectionPad: "60px 26px",
+    accentDecor: "number",
+  },
+];
+
+window.WEDDING_DATA = WEDDING_DATA;
+window.THEMES = THEMES;
+
+  </script>
+
+  <script type="text/babel" data-presets="react">
+// sections.jsx — 청첩장 섹션 컴포넌트 모음
+// 모든 섹션은 theme 객체를 받아서 무드를 다르게 표현합니다.
+
+const { useState, useEffect, useRef } = React;
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* Decorative atoms                                                         */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+function Hairline({ theme, w = 36, my = 18 }) {
+  return (
+    <div style={{
+      width: w, height: 1, background: theme.palette.hairline,
+      margin: `${my}px auto`,
+    }} />
+  );
+}
+
+function Ornament({ theme }) {
+  const c = theme.palette.accent;
+  if (theme.accentDecor === "leaf") {
+    return (
+      <svg width="44" height="14" viewBox="0 0 44 14" style={{ display: "block", margin: "0 auto" }}>
+        <path d="M2 7 L42 7" stroke={theme.palette.hairline} strokeWidth="1" />
+        <path d="M22 2 Q26 7 22 12 Q18 7 22 2 Z" fill={c} opacity="0.85" />
+      </svg>
+    );
+  }
+  if (theme.accentDecor === "number") {
+    return <div style={{ width: 1, height: 32, background: c, margin: "0 auto" }} />;
+  }
+  // classic: diamond
+  return (
+    <svg width="10" height="10" viewBox="0 0 10 10" style={{ display: "block", margin: "0 auto" }}>
+      <path d="M5 0 L10 5 L5 10 L0 5 Z" fill={c} />
+    </svg>
+  );
+}
+
+function SectionLabel({ theme, children }) {
+  return (
+    <div style={{
+      fontSize: 10,
+      letterSpacing: "0.32em",
+      color: theme.palette.textMuted,
+      textAlign: "center",
+      fontWeight: 500,
+      textTransform: "uppercase",
+    }}>{children}</div>
+  );
+}
+
+function SectionTitle({ theme, children }) {
+  return (
+    <h2 style={{
+      textAlign: "center",
+      margin: "10px 0 22px",
+      fontSize: Math.round(22 * theme.headingScale),
+      fontWeight: theme.headingWeight,
+      letterSpacing: theme.headingTracking,
+      color: theme.palette.text,
+      lineHeight: 1.3,
+    }}>{children}</h2>
+  );
+}
+
+function Section({ theme, label, title, alt, first, children, pad }) {
+  const p = theme.palette;
+  return (
+    <section style={{
+      padding: pad || theme.sectionPad,
+      background: alt ? p.panelAlt : p.panel,
+      color: p.text,
+      borderTop: first ? "none" : `1px solid ${p.hairline}`,
+    }}>
+      {label && <SectionLabel theme={theme}>{label}</SectionLabel>}
+      {title && <SectionTitle theme={theme}>{title}</SectionTitle>}
+      {children}
+    </section>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* Fireworks — canvas 기반 폭죽 애니메이션 (다크 헤로 배경용)                  */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+function Fireworks() {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const cv = canvasRef.current;
+    if (!cv) return;
+    const parent = cv.parentElement;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const ctx = cv.getContext("2d");
+    let W = parent.clientWidth || 400;
+    let H = parent.clientHeight || 600;
+
+    const resize = () => {
+      W = parent.clientWidth || W;
+      H = parent.clientHeight || H;
+      cv.width = W * dpr;
+      cv.height = H * dpr;
+      cv.style.width = W + "px";
+      cv.style.height = H + "px";
+      // 캔버스 크기 변경 시 컨텍스트 스테이트(transform/scale)가 리셋됨 — 다시 적용.
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
+    };
+    resize();
+    const ro = new ResizeObserver(resize);
+    ro.observe(parent);
+
+    const COLORS = [
+      "#F5E6C8", // warm ivory
+      "#FFD9A0", // soft gold
+      "#FFB874", // amber
+      "#FFFFFF", // white spark
+      "#FFC8B0", // peach
+      "#E8C690", // champagne
+    ];
+
+    const rockets = [];
+    const sparks = [];
+    let raf;
+    let lastLaunchAt = 0;
+    let frame = 0;
+    let running = true;
+
+    const launchRocket = () => {
+      const startX = W * (0.18 + Math.random() * 0.64);
+      const targetY = H * (0.18 + Math.random() * 0.28);
+      rockets.push({
+        x: startX,
+        y: H + 4,
+        prevX: startX,
+        prevY: H + 4,
+        vx: (Math.random() - 0.5) * 0.6,
+        vy: -(Math.sqrt(2 * 0.06 * (H - targetY)) + Math.random() * 0.5),
+        targetY,
+        gravity: 0.06,
+        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        trail: 6,
+      });
+    };
+
+    const explode = (r) => {
+      const count = 46 + Math.floor(Math.random() * 26);
+      const variant = Math.random();
+      const baseColor = r.color;
+      for (let i = 0; i < count; i++) {
+        const angle = (Math.PI * 2 * i) / count + Math.random() * 0.05;
+        const speed = variant > 0.6
+          ? 2 + Math.random() * 1.8        // round burst
+          : 1.4 + Math.random() * 2.6;    // irregular
+        sparks.push({
+          x: r.x,
+          y: r.y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 0.4,
+          life: 1,
+          decay: 0.009 + Math.random() * 0.012,
+          color: Math.random() > 0.85 ? "#FFFFFF" : baseColor,
+          size: 0.8 + Math.random() * 1.6,
+          drag: 0.985 + Math.random() * 0.01,
+        });
+      }
+    };
+
+    const loop = () => {
+      if (!running) return;
+      // 잔상 효과를 위한 약한 검정 페이드
+      ctx.globalCompositeOperation = "source-over";
+      ctx.fillStyle = "rgba(8, 8, 18, 0.22)";
+      ctx.fillRect(0, 0, W, H);
+
+      // 별빛 같은 합산 블렌딩
+      ctx.globalCompositeOperation = "lighter";
+
+      frame++;
+      const interval = 70 + Math.random() * 40;
+      if (frame - lastLaunchAt > interval && rockets.length < 4) {
+        launchRocket();
+        lastLaunchAt = frame;
+        // 가끔 더블 발사
+        if (Math.random() > 0.7) {
+          setTimeout(() => running && launchRocket(), 220);
+        }
+      }
+
+      // rockets
+      for (let i = rockets.length - 1; i >= 0; i--) {
+        const r = rockets[i];
+        r.prevX = r.x; r.prevY = r.y;
+        r.vy += r.gravity;
+        r.x += r.vx;
+        r.y += r.vy;
+
+        // glow trail
+        const grad = ctx.createLinearGradient(r.prevX, r.prevY, r.x, r.y);
+        grad.addColorStop(0, "rgba(255,220,160,0)");
+        grad.addColorStop(1, r.color);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 1.6;
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.moveTo(r.prevX, r.prevY - 6);
+        ctx.lineTo(r.x, r.y);
+        ctx.stroke();
+
+        ctx.fillStyle = "#FFFFFF";
+        ctx.beginPath();
+        ctx.arc(r.x, r.y, 1.4, 0, Math.PI * 2);
+        ctx.fill();
+
+        if (r.y <= r.targetY || r.vy >= 0) {
+          explode(r);
+          rockets.splice(i, 1);
+        }
+      }
+
+      // sparks
+      for (let i = sparks.length - 1; i >= 0; i--) {
+        const s = sparks[i];
+        s.vx *= s.drag;
+        s.vy *= s.drag;
+        s.vy += 0.025;
+        s.x += s.vx;
+        s.y += s.vy;
+        s.life -= s.decay;
+        if (s.life <= 0 || s.y > H + 20) { sparks.splice(i, 1); continue; }
+
+        const alpha = Math.max(0, s.life);
+        // glow halo
+        ctx.fillStyle = s.color;
+        ctx.globalAlpha = alpha * 0.25;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size * 3.2, 0, Math.PI * 2);
+        ctx.fill();
+        // core
+        ctx.globalAlpha = alpha;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = "source-over";
+
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+
+    return () => {
+      running = false;
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      style={{
+        position: "absolute",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        zIndex: 1,
+        pointerEvents: "none",
+      }}
+    />
+  );
+}
+
+function Stars() {
+  // 별빛 그라데이션 + 정적인 미세 별 — 폭죽이 사라진 사이를 메워줍니다
+  return (
+    <>
+      <div style={{
+        position: "absolute", inset: 0, zIndex: 0,
+        background: "radial-gradient(ellipse at 50% 30%, rgba(220,200,170,0.10) 0%, transparent 55%), radial-gradient(ellipse at 80% 70%, rgba(150,140,200,0.08) 0%, transparent 50%)",
+        pointerEvents: "none",
+      }} />
+      <div style={{
+        position: "absolute", inset: 0, zIndex: 0,
+        backgroundImage: `
+          radial-gradient(1px 1px at 12% 18%, rgba(255,240,210,0.6) 100%, transparent),
+          radial-gradient(1px 1px at 28% 64%, rgba(255,255,255,0.5) 100%, transparent),
+          radial-gradient(1px 1px at 58% 22%, rgba(255,230,180,0.7) 100%, transparent),
+          radial-gradient(1px 1px at 76% 48%, rgba(255,255,255,0.45) 100%, transparent),
+          radial-gradient(1px 1px at 88% 14%, rgba(255,240,210,0.6) 100%, transparent),
+          radial-gradient(1px 1px at 8% 88%, rgba(255,255,255,0.4) 100%, transparent),
+          radial-gradient(1px 1px at 42% 84%, rgba(255,230,180,0.55) 100%, transparent),
+          radial-gradient(1px 1px at 68% 90%, rgba(255,255,255,0.45) 100%, transparent)
+        `,
+        pointerEvents: "none",
+        animation: "starsTwinkle 5s ease-in-out infinite alternate",
+      }} />
+    </>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* Hero                                                                     */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+function Hero({ theme, data }) {
+  const p = theme.palette;
+  const { groom, bride, date, venue } = data;
+  const slotId = `${theme.id}-hero`;
+
+  if (theme.style === "editorial") {
+    // 다크 나잇 스카이 + 폭죽 — 아래 섹션과 연속감 있도록 그라데이션이 panel 컬러로 수렴
+    return (
+      <section style={{
+        position: "relative",
+        padding: "56px 28px 72px",
+        background: `linear-gradient(180deg, #07060C 0%, ${p.bg} 55%, ${p.panelAlt} 100%)`,
+        color: p.text,
+        textAlign: "center",
+        overflow: "hidden",
+        isolation: "isolate",
+      }}>
+        {/* 폭죽 캔버스 — section을 가득 채움 */}
+        <Fireworks />
+        {/* 미세한 별/입자 — CSS로 정적인 분위기 보강 */}
+        <Stars />
+
+        <div style={{ position: "relative", zIndex: 2 }}>
+          <div style={{
+            fontSize: 11, letterSpacing: "0.45em",
+            color: "rgba(244,240,230,0.65)", marginBottom: 30,
+            fontWeight: 500,
+          }}>
+            WE'RE GETTING MARRIED
+          </div>
+
+          <div style={{
+            fontSize: 76, fontWeight: 200, lineHeight: 1,
+            letterSpacing: "0.04em",
+            color: "#F4F0E6",
+            fontVariantNumeric: "lining-nums",
+            textShadow: "0 0 30px rgba(255, 220, 160, 0.25)",
+          }}>
+            {String(date.m).padStart(2, "0")}
+            <span style={{ opacity: 0.4 }}>.</span>
+            {String(date.d).padStart(2, "0")}
+          </div>
+          <div style={{
+            fontSize: 11, letterSpacing: "0.4em",
+            color: "rgba(244,240,230,0.6)", marginTop: 12,
+          }}>
+            {date.weekday} · {date.y}
+          </div>
+
+          <div style={{
+            margin: "36px 14px 32px",
+            border: "1px solid rgba(244,240,230,0.2)",
+            padding: 8,
+            background: "rgba(10,10,20,0.35)",
+            backdropFilter: "blur(2px)",
+          }}>
+            <image-slot
+              id={slotId}
+              shape="rect"
+              placeholder="메인 사진 (세로)"
+              style={{
+                width: "100%", height: 360, display: "block",
+                background: "rgba(255,255,255,0.04)",
+              }}
+            ></image-slot>
+          </div>
+
+          <div style={{
+            fontSize: 24, fontWeight: 400,
+            letterSpacing: "0.08em", lineHeight: 1.4,
+            color: "#F4F0E6",
+          }}>
+            {groom.name}
+            <span style={{ margin: "0 14px", color: "#D9B98A", fontWeight: 200 }}>&amp;</span>
+            {bride.name}
+          </div>
+          <div style={{
+            marginTop: 14, fontSize: 12,
+            color: "rgba(244,240,230,0.6)", letterSpacing: "0.22em",
+          }}>
+            {venue.name} · {venue.hall}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (theme.style === "botanical") {
+    return (
+      <section style={{
+        padding: "44px 28px 52px",
+        background: p.panel,
+        color: p.text,
+        textAlign: "center",
+        position: "relative",
+      }}>
+        <LeafCorner theme={theme} pos="tl" />
+        <LeafCorner theme={theme} pos="br" />
+        <SectionLabel theme={theme}>OUR WEDDING DAY</SectionLabel>
+        <div style={{ marginTop: 20, marginBottom: 28 }}>
+          <image-slot
+            id={slotId}
+            shape="rect"
+            placeholder="메인 사진 (세로)"
+            style={{ width: "100%", height: 420, display: "block" }}
+          ></image-slot>
+        </div>
+        <div style={{ fontSize: 11, letterSpacing: "0.4em", color: p.accent, marginBottom: 10 }}>
+          {groom.en} &nbsp;·&nbsp; {bride.en}
+        </div>
+        <div style={{ fontSize: 26, fontWeight: 500, letterSpacing: "0.04em", lineHeight: 1.4 }}>
+          {groom.name} <span style={{ color: p.accent, margin: "0 8px" }}>&amp;</span> {bride.name}
+        </div>
+        <Hairline theme={theme} w={28} my={20} />
+        <div style={{ fontSize: 14, color: p.textSoft, letterSpacing: "0.04em" }}>
+          {date.longText}
+        </div>
+        <div style={{ marginTop: 6, fontSize: 13, color: p.textMuted }}>
+          {venue.name} · {venue.hall}
+        </div>
+      </section>
+    );
+  }
+
+  // classic
+  return (
+    <section style={{
+      padding: "44px 28px 50px",
+      background: p.panel,
+      color: p.text,
+      textAlign: "center",
+    }}>
+      <SectionLabel theme={theme}>SAVE THE DATE</SectionLabel>
+      <div style={{
+        margin: "24px auto 24px",
+        padding: 10,
+        border: `1px solid ${p.stroke}`,
+        background: p.panel,
+      }}>
+        <image-slot
+          id={slotId}
+          shape="rect"
+          radius="0"
+          placeholder="메인 사진 (세로)"
+          style={{ width: "100%", height: 380, display: "block" }}
+        ></image-slot>
+      </div>
+      <div style={{
+        fontSize: 12, letterSpacing: "0.32em", color: p.accent, marginBottom: 12,
+      }}>
+        {groom.en} · {bride.en}
+      </div>
+      <div style={{
+        fontSize: 26, fontWeight: 400, letterSpacing: "0.06em", color: p.text,
+      }}>
+        {groom.name} &nbsp;·&nbsp; {bride.name}
+      </div>
+      <Hairline theme={theme} w={28} my={20} />
+      <div style={{ fontSize: 14, color: p.textSoft }}>{date.longText}</div>
+      <div style={{ marginTop: 4, fontSize: 13, color: p.textMuted }}>
+        {venue.name} · {venue.hall}
+      </div>
+    </section>
+  );
+}
+
+function LeafCorner({ theme, pos }) {
+  const transforms = {
+    tl: "translate(14px, 14px) rotate(0deg)",
+    br: "translate(calc(100% - 56px), calc(100% - 56px)) rotate(180deg)",
+  };
+  return (
+    <svg
+      width="42" height="42" viewBox="0 0 42 42"
+      style={{ position: "absolute", top: 0, left: 0, transform: transforms[pos], opacity: 0.5 }}
+    >
+      <path d="M2 40 Q2 20 22 12 Q34 8 40 2"
+        stroke={theme.palette.accent} strokeWidth="1" fill="none" />
+      <path d="M14 28 Q20 22 26 22" stroke={theme.palette.accent} strokeWidth="1" fill="none" />
+      <path d="M22 12 Q22 6 28 4" stroke={theme.palette.accent} strokeWidth="1" fill="none" />
+      <ellipse cx="22" cy="22" rx="5" ry="2.4" fill={theme.palette.accent} opacity="0.45" transform="rotate(-40 22 22)" />
+      <ellipse cx="10" cy="30" rx="4" ry="2" fill={theme.palette.accent} opacity="0.35" transform="rotate(-50 10 30)" />
+    </svg>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* Greeting                                                                 */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+function Greeting({ theme, data }) {
+  const lines = data.greeting.body;
+  return (
+    <Section theme={theme} label="INVITATION" title="모시는 글" alt={theme.style === "editorial"}>
+      <Ornament theme={theme} />
+      <div style={{
+        textAlign: "center",
+        margin: "26px auto 0",
+        maxWidth: 320,
+        lineHeight: 2.1,
+        fontSize: 14.5,
+        color: theme.palette.textSoft,
+        fontWeight: theme.bodyWeight,
+        letterSpacing: "0.01em",
+        whiteSpace: "pre-line",
+      }}>
+        {lines.map((l, i) => (
+          <div key={i} style={{ minHeight: l ? "auto" : 14 }}>{l}</div>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* People — 신랑신부 + 양가 부모님                                            */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+function People({ theme, data }) {
+  const p = theme.palette;
+  const { groom, bride } = data;
+
+  return (
+    <Section theme={theme} label="THE COUPLE" title="신랑 · 신부">
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "1fr auto 1fr",
+        gap: 14,
+        alignItems: "center",
+        marginTop: 8,
+      }}>
+        <PersonCard theme={theme} person={groom} side="신랑" />
+        <div style={{ width: 1, height: 80, background: p.hairline }} />
+        <PersonCard theme={theme} person={bride} side="신부" />
+      </div>
+    </Section>
+  );
+}
+
+function PersonCard({ theme, person, side }) {
+  const p = theme.palette;
+  return (
+    <div style={{ textAlign: "center" }}>
+      <div style={{
+        fontSize: 11, letterSpacing: "0.3em", color: p.accent, marginBottom: 6,
+      }}>{side === "신랑" ? "GROOM" : "BRIDE"}</div>
+      <div style={{
+        fontSize: 11, color: p.textMuted, lineHeight: 1.7, marginBottom: 8,
+      }}>
+        {person.father} · {person.mother}
+        <div style={{ fontSize: 10, marginTop: 2, letterSpacing: "0.1em" }}>의 {person.role}</div>
+      </div>
+      <div style={{
+        fontSize: 20, fontWeight: 500, letterSpacing: "0.08em", color: p.text,
+      }}>{person.name}</div>
+    </div>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* DateInfo — 일시 · 장소 + D-day                                            */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+function DateInfo({ theme, data }) {
+  const p = theme.palette;
+  const { date, venue } = data;
+
+  return (
+    <Section theme={theme} label="WHEN & WHERE" title="예식 일시 · 장소" alt>
+      <Calendar theme={theme} y={date.y} m={date.m} d={date.d} />
+      <div style={{ textAlign: "center", marginTop: 22 }}>
+        <div style={{ fontSize: 15, color: p.text, fontWeight: 500, letterSpacing: "0.04em" }}>
+          {date.longText}
+        </div>
+        <Hairline theme={theme} my={14} />
+        <div style={{ fontSize: 16, color: p.text, fontWeight: 500 }}>{venue.name}</div>
+        <div style={{ fontSize: 13, color: p.textMuted, marginTop: 4 }}>{venue.hall}</div>
+      </div>
+      <DDay theme={theme} iso={data.date.iso} groom={data.groom.name} bride={data.bride.name} />
+    </Section>
+  );
+}
+
+function Calendar({ theme, y, m, d }) {
+  const p = theme.palette;
+  const first = new Date(y, m - 1, 1).getDay();
+  const daysIn = new Date(y, m, 0).getDate();
+  const cells = [];
+  for (let i = 0; i < first; i++) cells.push(null);
+  for (let i = 1; i <= daysIn; i++) cells.push(i);
+  while (cells.length % 7 !== 0) cells.push(null);
+
+  const labels = ["일", "월", "화", "수", "목", "금", "토"];
+  return (
+    <div style={{ maxWidth: 280, margin: "0 auto", textAlign: "center" }}>
+      <div style={{
+        fontSize: 13, letterSpacing: "0.18em", color: p.accent, marginBottom: 12, fontWeight: 500,
+      }}>
+        {y}.{String(m).padStart(2, "0")}
+      </div>
+      <div style={{
+        display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 4,
+        fontSize: 11, color: p.textMuted, marginBottom: 6,
+      }}>
+        {labels.map((l, i) => (
+          <div key={l} style={{
+            color: i === 0 ? p.accent : p.textMuted, letterSpacing: "0.05em",
+          }}>{l}</div>
+        ))}
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 4 }}>
+        {cells.map((c, i) => {
+          const isTarget = c === d;
+          const isSunday = i % 7 === 0;
+          return (
+            <div key={i} style={{
+              fontSize: 12.5,
+              padding: "8px 0",
+              color: c ? (isTarget ? p.onAccent : (isSunday ? p.accent : p.textSoft)) : "transparent",
+              background: isTarget ? p.accent : "transparent",
+              borderRadius: isTarget ? "50%" : 0,
+              fontWeight: isTarget ? 600 : 400,
+            }}>{c || "·"}</div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function DDay({ theme, iso, groom, bride }) {
+  const p = theme.palette;
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(id);
+  }, []);
+  const target = new Date(iso);
+  const diff = Math.max(0, target - now);
+  const day = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hour = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const min = Math.floor((diff / (1000 * 60)) % 60);
+  const sec = Math.floor((diff / 1000) % 60);
+
+  const items = [
+    { label: "DAYS", v: day },
+    { label: "HOUR", v: hour },
+    { label: "MIN",  v: min },
+    { label: "SEC",  v: sec },
+  ];
+
+  return (
+    <div style={{
+      marginTop: 26,
+      padding: "18px 14px",
+      border: `1px solid ${p.hairline}`,
+      background: p.panel,
+      textAlign: "center",
+    }}>
+      <div style={{
+        display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6,
+      }}>
+        {items.map(it => (
+          <div key={it.label}>
+            <div style={{
+              fontSize: 22, fontWeight: 500, color: p.accent,
+              fontVariantNumeric: "tabular-nums",
+            }}>{String(it.v).padStart(2, "0")}</div>
+            <div style={{ fontSize: 9, letterSpacing: "0.2em", color: p.textMuted, marginTop: 2 }}>{it.label}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{ fontSize: 12, color: p.textSoft, marginTop: 12, letterSpacing: "0.04em" }}>
+        <span style={{ color: p.accent, fontWeight: 500 }}>{groom} · {bride}</span> 의 결혼식이 <span style={{ color: p.accent, fontWeight: 500 }}>{day}일</span> 남았습니다.
+      </div>
+    </div>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* NoWreath — 화환 사절 강조 (필수)                                          */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+function NoWreath({ theme }) {
+  const p = theme.palette;
+  return (
+    <section style={{
+      padding: "32px 28px",
+      background: p.panel,
+      borderTop: `1px solid ${p.hairline}`,
+    }}>
+      <div style={{
+        background: p.noticeBg,
+        color: p.text,
+        border: `1px solid ${p.noticeBorder}`,
+        padding: "22px 20px 24px",
+        textAlign: "center",
+        position: "relative",
+      }}>
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: 10 }}>
+          <NoFlowerIcon color={p.accent} />
+        </div>
+        <div style={{
+          fontSize: 10, letterSpacing: "0.4em", marginBottom: 8,
+          color: p.accent, fontWeight: 600,
+        }}>POLITE NOTICE</div>
+        <div style={{
+          fontSize: 18, fontWeight: 600, letterSpacing: "0.08em", marginBottom: 10,
+          color: p.text,
+        }}>화환은 정중히 사양합니다</div>
+        <div style={{
+          fontSize: 13, lineHeight: 1.75, color: p.textSoft,
+          maxWidth: 280, margin: "0 auto",
+          fontWeight: theme.bodyWeight,
+        }}>
+          예식장 사정으로 화환·축하 화분을 받을 수 없습니다.<br/>
+          귀한 마음만 감사히 받겠습니다.
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function NoFlowerIcon({ color }) {
+  return (
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+      <circle cx="18" cy="14" r="3.2" stroke={color} strokeWidth="1.3" />
+      <circle cx="13" cy="18" r="3" stroke={color} strokeWidth="1.3" />
+      <circle cx="23" cy="18" r="3" stroke={color} strokeWidth="1.3" />
+      <circle cx="18" cy="22" r="3" stroke={color} strokeWidth="1.3" />
+      <path d="M18 25 L18 32" stroke={color} strokeWidth="1.3" strokeLinecap="round" />
+      <line x1="6" y1="6" x2="30" y2="30" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* Gallery                                                                  */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+function Gallery({ theme }) {
+  const p = theme.palette;
+  const [idx, setIdx] = useState(0);
+  const slots = [0, 1, 2, 3, 4, 5];
+  const heroH = theme.style === "editorial" ? 340 : 300;
+
+  return (
+    <Section theme={theme} label="GALLERY" title="우리의 순간" alt={theme.style !== "editorial"}>
+      <div style={{ position: "relative", marginBottom: 12 }}>
+        {slots.map((s, i) => (
+          <div key={s} style={{ display: i === idx ? "block" : "none" }}>
+            <image-slot
+              id={`${theme.id}-gallery-${s}`}
+              shape="rect"
+              placeholder={`사진 ${s + 1} / ${slots.length}`}
+              style={{ width: "100%", height: heroH, display: "block" }}
+            ></image-slot>
+          </div>
+        ))}
+        <div style={{
+          position: "absolute", right: 10, bottom: 10,
+          background: "rgba(0,0,0,0.45)", color: "#fff",
+          padding: "3px 9px", fontSize: 11, letterSpacing: "0.1em",
+          borderRadius: theme.style === "editorial" ? 0 : 2,
+        }}>
+          {String(idx + 1).padStart(2, "0")} / {String(slots.length).padStart(2, "0")}
+        </div>
+      </div>
+      <div style={{ display: "flex", gap: 6, justifyContent: "center", marginTop: 6 }}>
+        {slots.map((s, i) => (
+          <button
+            key={s}
+            onClick={() => setIdx(i)}
+            style={{
+              width: i === idx ? 22 : 8, height: 4, border: "none", padding: 0,
+              background: i === idx ? p.accent : p.hairline,
+              cursor: "pointer", transition: "all .25s",
+            }}
+            aria-label={`사진 ${i + 1}`}
+          />
+        ))}
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between", marginTop: 12 }}>
+        <button onClick={() => setIdx((idx - 1 + slots.length) % slots.length)} style={navBtnStyle(p)}>← 이전</button>
+        <button onClick={() => setIdx((idx + 1) % slots.length)} style={navBtnStyle(p)}>다음 →</button>
+      </div>
+    </Section>
+  );
+}
+
+function navBtnStyle(p) {
+  return {
+    border: `1px solid ${p.hairline}`,
+    background: "transparent",
+    color: p.textSoft,
+    padding: "8px 14px",
+    fontSize: 12,
+    letterSpacing: "0.08em",
+    cursor: "pointer",
+    fontFamily: "inherit",
+  };
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* Location — 약도/지도 + 교통편                                              */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+function Location({ theme, data }) {
+  const p = theme.palette;
+  const { venue, transit } = data;
+
+  return (
+    <Section theme={theme} label="LOCATION" title="오시는 길">
+      <div style={{ textAlign: "center", marginBottom: 16 }}>
+        <div style={{ fontSize: 17, fontWeight: 500, color: p.text }}>{venue.name}</div>
+        <div style={{ fontSize: 13, color: p.textMuted, marginTop: 4 }}>{venue.address}</div>
+        <div style={{ fontSize: 12, color: p.textMuted, marginTop: 2 }}>{venue.hall} · {venue.tel}</div>
+      </div>
+
+      {/* 약도 placeholder */}
+      <MapPlaceholder theme={theme} venue={venue} />
+
+      <div style={{ display: "flex", gap: 6, marginTop: 10 }}>
+        <button style={pillBtn(theme, true)}>네이버 지도</button>
+        <button style={pillBtn(theme, false)}>카카오맵</button>
+        <button style={pillBtn(theme, false)}>티맵</button>
+      </div>
+
+      <div style={{ marginTop: 26 }}>
+        {transit.map((t, i) => (
+          <div key={i} style={{
+            display: "grid",
+            gridTemplateColumns: "56px 1fr",
+            gap: 12,
+            padding: "14px 0",
+            borderBottom: i < transit.length - 1 ? `1px solid ${p.hairline}` : "none",
+          }}>
+            <div style={{
+              fontSize: 11, letterSpacing: "0.2em", color: p.accent,
+              fontWeight: 600, paddingTop: 2,
+            }}>{t.kind}</div>
+            <div style={{
+              fontSize: 13, color: p.textSoft, lineHeight: 1.65, fontWeight: theme.bodyWeight,
+            }}>{t.desc}</div>
+          </div>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+function MapPlaceholder({ theme, venue }) {
+  const p = theme.palette;
+  // 다크 테마에 어울리는 그리드 + 핀
+  return (
+    <div style={{
+      position: "relative",
+      width: "100%", height: 180,
+      background:
+        `linear-gradient(${p.hairline} 1px, transparent 1px) 0 0 / 20px 20px,` +
+        `linear-gradient(90deg, ${p.hairline} 1px, transparent 1px) 0 0 / 20px 20px,` +
+        `${p.panel}`,
+      border: `1px solid ${p.hairline}`,
+      display: "flex", alignItems: "center", justifyContent: "center",
+      overflow: "hidden",
+    }}>
+      <div style={{
+        position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center",
+        flexDirection: "column", gap: 6,
+      }}>
+        <svg width="28" height="32" viewBox="0 0 28 32">
+          <path d="M14 1 C7 1 2 6 2 13 C2 22 14 31 14 31 C14 31 26 22 26 13 C26 6 21 1 14 1 Z"
+            fill={p.accent} stroke={p.accentDeep} strokeWidth="1" />
+          <circle cx="14" cy="13" r="4.2" fill={p.panel} />
+        </svg>
+        <div style={{
+          fontSize: 11, color: p.textSoft, letterSpacing: "0.05em",
+          background: p.panel, padding: "3px 8px", border: `1px solid ${p.hairline}`,
+          fontFamily: "ui-monospace, Menlo, monospace",
+        }}>지도 영역 — {venue.name}</div>
+      </div>
+    </div>
+  );
+}
+
+function pillBtn(theme, primary) {
+  const p = theme.palette;
+  return {
+    flex: 1,
+    padding: "10px 0",
+    fontSize: 12,
+    fontFamily: "inherit",
+    letterSpacing: "0.06em",
+    border: `1px solid ${primary ? p.accent : p.hairline}`,
+    background: primary ? p.accent : "transparent",
+    color: primary ? p.onAccent : p.textSoft,
+    cursor: "pointer",
+  };
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* RSVP                                                                     */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+function Rsvp({ theme }) {
+  const p = theme.palette;
+  const isMono = theme.style === "editorial";
+
+  // 에디토리얼(C) 시안에서는 강조 RSVP — 다크 인버트 + 큰 헤로
+  if (isMono) {
+    return <RsvpEmphasized theme={theme} />;
+  }
+
+  const [side, setSide] = useState("groom");
+  const [attend, setAttend] = useState(null);
+  return (
+    <Section theme={theme} label="RSVP" title="참석 의사 전달" alt>
+      <div style={{
+        textAlign: "center", fontSize: 13, color: p.textSoft, lineHeight: 1.8,
+        maxWidth: 290, margin: "0 auto 22px",
+      }}>
+        축하의 마음으로 참석해 주시는 모든 분들께<br/>
+        정성껏 식사를 준비하고자 합니다.<br/>
+        참석 여부를 알려주시면 큰 도움이 됩니다.
+      </div>
+
+      <div style={{ display: "grid", gap: 12 }}>
+        <label style={{ fontSize: 11, letterSpacing: "0.2em", color: p.textMuted }}>댁(신랑/신부) 측</label>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
+          <ToggleBtn theme={theme} on={side === "groom"} onClick={() => setSide("groom")}>신랑 측</ToggleBtn>
+          <ToggleBtn theme={theme} on={side === "bride"} onClick={() => setSide("bride")}>신부 측</ToggleBtn>
+        </div>
+
+        <label style={{ fontSize: 11, letterSpacing: "0.2em", color: p.textMuted, marginTop: 6 }}>참석 여부</label>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
+          <ToggleBtn theme={theme} on={attend === true}  onClick={() => setAttend(true)}>참석</ToggleBtn>
+          <ToggleBtn theme={theme} on={attend === false} onClick={() => setAttend(false)}>불참</ToggleBtn>
+        </div>
+
+        <Input theme={theme} placeholder="성함" />
+        <Input theme={theme} placeholder="연락처 (010-0000-0000)" />
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
+          <Input theme={theme} placeholder="동행 인원 (본인 포함)" />
+          <Select theme={theme} options={["식사 함", "식사 안 함"]} />
+        </div>
+
+        <button
+          style={{
+            marginTop: 8,
+            padding: "14px 0",
+            background: p.accent,
+            color: p.onAccent,
+            border: "none",
+            fontSize: 14,
+            fontFamily: "inherit",
+            letterSpacing: "0.18em",
+            cursor: "pointer",
+          }}
+        >전 달 하 기</button>
+      </div>
+    </Section>
+  );
+}
+
+function RsvpEmphasized({ theme }) {
+  const [side, setSide] = useState("groom");
+  const [attend, setAttend] = useState(null);
+  const [meal, setMeal] = useState("식사 함");
+
+  // 다크 통일 테마 — 골드 프레임으로 강조
+  const cardBg = "linear-gradient(180deg, #1A1825 0%, #131220 100%)";
+  const cardText = "#F4F0E6";
+  const muted = "rgba(244,240,230,0.55)";
+  const strokeStrong = "rgba(244,240,230,0.42)";
+  const gold = "#D9B98A";
+
+  return (
+    <section style={{
+      padding: "20px 16px 44px",
+      background: theme.palette.bg,
+      borderTop: `1px solid ${theme.palette.hairline}`,
+      position: "relative",
+    }}>
+      {/* 외부 라벨 — 다음 섹션과 연결되는 brand mark */}
+      <div style={{
+        display: "flex", alignItems: "center", justifyContent: "center",
+        gap: 12, padding: "16px 0 22px",
+      }}>
+        <div style={{ flex: 1, height: 1, background: "rgba(217,185,138,0.35)", maxWidth: 60 }} />
+        <div style={{
+          fontSize: 10, letterSpacing: "0.5em",
+          color: gold, fontWeight: 600,
+        }}>R · S · V · P</div>
+        <div style={{ flex: 1, height: 1, background: "rgba(217,185,138,0.35)", maxWidth: 60 }} />
+      </div>
+
+      <div style={{
+        position: "relative",
+        background: cardBg,
+        color: cardText,
+        padding: "40px 26px 30px",
+        overflow: "hidden",
+        border: `1px solid ${gold}`,
+        boxShadow:
+          "0 0 0 6px rgba(217,185,138,0.06)," +
+          "0 22px 50px rgba(0,0,0,0.55)," +
+          "inset 0 0 40px rgba(217,185,138,0.04)",
+      }}>
+        {/* 코너 마커 */}
+        <CornerTicks color={strokeStrong} />
+
+        {/* 가장 강조되는 헤더 */}
+        <div style={{ textAlign: "center", marginBottom: 26 }}>
+          <div style={{
+            fontSize: 28, fontWeight: 300,
+            letterSpacing: "0.04em", lineHeight: 1.35,
+            color: cardText,
+          }}>
+            참석 의사를<br/>
+            <span style={{ fontWeight: 500, color: gold }}>꼭 알려주세요</span>
+          </div>
+          <div style={{
+            width: 28, height: 1, background: gold,
+            margin: "20px auto 18px",
+          }} />
+          <div style={{
+            fontSize: 12.5, lineHeight: 1.85, color: muted,
+            maxWidth: 280, margin: "0 auto", letterSpacing: "0.02em",
+          }}>
+            귀한 걸음 정성껏 모시기 위해<br/>
+            <span style={{ color: cardText }}>4월 10일까지</span> 회신 부탁드립니다.
+          </div>
+        </div>
+
+        {/* 폼 */}
+        <div style={{ display: "grid", gap: 14 }}>
+          <FieldGroup label="댁(신랑/신부) 측" muted={muted}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+              <DarkToggle on={side === "groom"} onClick={() => setSide("groom")}>신랑 측</DarkToggle>
+              <DarkToggle on={side === "bride"} onClick={() => setSide("bride")}>신부 측</DarkToggle>
+            </div>
+          </FieldGroup>
+
+          <FieldGroup label="참석 여부" muted={muted}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+              <DarkToggle
+                on={attend === true}
+                onClick={() => setAttend(true)}
+                strong
+              >참 석</DarkToggle>
+              <DarkToggle
+                on={attend === false}
+                onClick={() => setAttend(false)}
+              >불 참</DarkToggle>
+            </div>
+          </FieldGroup>
+
+          <FieldGroup label="성함 · 연락처" muted={muted}>
+            <DarkInput placeholder="성함" />
+            <DarkInput placeholder="연락처 (010-0000-0000)" />
+          </FieldGroup>
+
+          <FieldGroup label="동행 · 식사" muted={muted}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+              <DarkInput placeholder="동행 인원" />
+              <div style={{ display: "flex", gap: 4 }}>
+                <DarkToggle on={meal === "식사 함"} onClick={() => setMeal("식사 함")} small>함</DarkToggle>
+                <DarkToggle on={meal === "식사 안 함"} onClick={() => setMeal("식사 안 함")} small>안 함</DarkToggle>
+              </div>
+            </div>
+          </FieldGroup>
+
+          <button
+            style={{
+              marginTop: 6,
+              padding: "18px 0",
+              background: gold,
+              color: "#141318",
+              border: "none",
+              fontSize: 14,
+              fontFamily: "inherit",
+              fontWeight: 600,
+              letterSpacing: "0.32em",
+              cursor: "pointer",
+              transition: "transform .15s, background .15s",
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = "#F0D6A0"; }}
+            onMouseLeave={e => { e.currentTarget.style.background = gold; }}
+          >전 달 하 기 →</button>
+
+          <div style={{
+            textAlign: "center", fontSize: 10, letterSpacing: "0.22em",
+            color: muted, marginTop: 4,
+          }}>
+            YOUR REPLY MEANS A LOT TO US
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CornerTicks({ color }) {
+  const sz = 14;
+  const w = 1;
+  const make = (pos) => ({
+    position: "absolute",
+    width: sz, height: sz,
+    ...pos,
+  });
+  return (
+    <>
+      <div style={make({ top: 10, left: 10, borderTop: `${w}px solid ${color}`, borderLeft: `${w}px solid ${color}` })} />
+      <div style={make({ top: 10, right: 10, borderTop: `${w}px solid ${color}`, borderRight: `${w}px solid ${color}` })} />
+      <div style={make({ bottom: 10, left: 10, borderBottom: `${w}px solid ${color}`, borderLeft: `${w}px solid ${color}` })} />
+      <div style={make({ bottom: 10, right: 10, borderBottom: `${w}px solid ${color}`, borderRight: `${w}px solid ${color}` })} />
+    </>
+  );
+}
+
+function FieldGroup({ label, muted, children }) {
+  return (
+    <div>
+      <div style={{
+        fontSize: 10, letterSpacing: "0.28em",
+        color: muted, marginBottom: 8, fontWeight: 500,
+      }}>{label}</div>
+      <div style={{ display: "grid", gap: 6 }}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function DarkToggle({ on, onClick, children, strong, small }) {
+  const gold = "#D9B98A";
+  const cardText = "#F4F0E6";
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        padding: small ? "10px 0" : "13px 0",
+        fontSize: small ? 12 : 13,
+        fontFamily: "inherit",
+        fontWeight: strong && on ? 600 : 400,
+        border: `1px solid ${on ? gold : "rgba(244,240,230,0.22)"}`,
+        background: on ? (strong ? gold : "rgba(217,185,138,0.18)") : "transparent",
+        color: on ? (strong ? "#141318" : cardText) : "rgba(244,240,230,0.7)",
+        cursor: "pointer",
+        letterSpacing: "0.12em",
+        flex: 1,
+        transition: "all .15s",
+      }}
+    >{children}</button>
+  );
+}
+
+function DarkInput({ placeholder }) {
+  return (
+    <input
+      placeholder={placeholder}
+      style={{
+        padding: "13px 14px",
+        fontSize: 13,
+        fontFamily: "inherit",
+        border: "1px solid rgba(244,240,230,0.22)",
+        background: "rgba(255,255,255,0.04)",
+        color: "#F4F0E6",
+        outline: "none",
+        letterSpacing: "0.02em",
+      }}
+    />
+  );
+}
+
+function ToggleBtn({ theme, on, onClick, children }) {
+  const p = theme.palette;
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        padding: "11px 0",
+        fontSize: 13,
+        fontFamily: "inherit",
+        border: `1px solid ${on ? p.accent : p.hairline}`,
+        background: on ? p.accent : "transparent",
+        color: on ? p.onAccent : p.textSoft,
+        cursor: "pointer",
+        letterSpacing: "0.08em",
+      }}
+    >{children}</button>
+  );
+}
+
+function Input({ theme, placeholder }) {
+  const p = theme.palette;
+  return (
+    <input
+      placeholder={placeholder}
+      style={{
+        padding: "12px 12px",
+        fontSize: 13,
+        fontFamily: "inherit",
+        border: `1px solid ${p.hairline}`,
+        background: p.panel,
+        color: p.text,
+        outline: "none",
+      }}
+    />
+  );
+}
+
+function Select({ theme, options }) {
+  const p = theme.palette;
+  return (
+    <select style={{
+      padding: "12px 12px",
+      fontSize: 13,
+      fontFamily: "inherit",
+      border: `1px solid ${p.hairline}`,
+      background: p.panel,
+      color: p.text,
+      outline: "none",
+    }}>
+      {options.map(o => <option key={o}>{o}</option>)}
+    </select>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* Account — 계좌번호 (마음 전하실 곳)                                        */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+function Account({ theme, data }) {
+  const p = theme.palette;
+  const [open, setOpen] = useState({ groom: false, bride: false });
+  const { groom, bride, accounts } = data;
+
+  return (
+    <Section theme={theme} label="GIFT" title="마음 전하실 곳">
+      <div style={{
+        textAlign: "center", fontSize: 13, color: p.textSoft, lineHeight: 1.8,
+        maxWidth: 300, margin: "0 auto 22px",
+      }}>
+        참석이 어려우신 분들을 위해<br/>
+        계좌번호를 안내드립니다.<br/>
+        축복의 마음을 감사히 전하겠습니다.
+      </div>
+
+      <AccountGroup
+        theme={theme}
+        title={`신랑 측 · ${groom.name}`}
+        open={open.groom}
+        onToggle={() => setOpen(s => ({ ...s, groom: !s.groom }))}
+        items={accounts.groom}
+      />
+      <AccountGroup
+        theme={theme}
+        title={`신부 측 · ${bride.name}`}
+        open={open.bride}
+        onToggle={() => setOpen(s => ({ ...s, bride: !s.bride }))}
+        items={accounts.bride}
+      />
+    </Section>
+  );
+}
+
+function AccountGroup({ theme, title, open, onToggle, items }) {
+  const p = theme.palette;
+  return (
+    <div style={{ marginBottom: 8, border: `1px solid ${p.hairline}`, background: p.panel }}>
+      <button
+        onClick={onToggle}
+        style={{
+          width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center",
+          padding: "16px 16px",
+          background: "transparent",
+          color: p.text,
+          border: "none",
+          fontFamily: "inherit",
+          fontSize: 13.5,
+          fontWeight: 500,
+          letterSpacing: "0.04em",
+          cursor: "pointer",
+        }}
+      >
+        <span>{title}</span>
+        <span style={{ color: p.accent, fontSize: 12 }}>{open ? "닫기 −" : "펼치기 +"}</span>
+      </button>
+      {open && (
+        <div style={{ padding: "0 16px 16px" }}>
+          {items.map((it, i) => (
+            <div key={i} style={{
+              display: "flex", justifyContent: "space-between", alignItems: "center",
+              padding: "12px 0",
+              borderTop: `1px dashed ${p.hairline}`,
+            }}>
+              <div>
+                <div style={{ fontSize: 12, color: p.textMuted, marginBottom: 2 }}>{it.who}</div>
+                <div style={{ fontSize: 13.5, color: p.text, fontWeight: 500 }}>
+                  {it.bank} · {it.number}
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  navigator.clipboard?.writeText(it.number);
+                }}
+                style={{
+                  padding: "6px 10px",
+                  fontSize: 11,
+                  fontFamily: "inherit",
+                  border: `1px solid ${p.accent}`,
+                  background: "transparent",
+                  color: p.accent,
+                  cursor: "pointer",
+                  letterSpacing: "0.06em",
+                }}
+              >복사</button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* Guestbook                                                                */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+function Guestbook({ theme }) {
+  const p = theme.palette;
+  const [msgs, setMsgs] = useState([
+    { name: "이지원", text: "두 분 결혼 진심으로 축하해요! 행복하세요 💍", time: "방금" },
+    { name: "박재현", text: "예쁜 신부, 멋진 신랑! 꽃길만 걸으세요.", time: "1시간 전" },
+    { name: "정수민", text: "결혼식 너무 기대돼요. 그날 봬요!", time: "어제" },
+  ]);
+  const [name, setName] = useState("");
+  const [text, setText] = useState("");
+
+  const submit = () => {
+    if (!name.trim() || !text.trim()) return;
+    setMsgs([{ name, text, time: "방금" }, ...msgs]);
+    setName(""); setText("");
+  };
+
+  return (
+    <Section theme={theme} label="GUEST BOOK" title="축하 메시지" alt={theme.style !== "editorial"}>
+      <div style={{ display: "grid", gap: 8, marginBottom: 16 }}>
+        <input
+          value={name} onChange={e => setName(e.target.value)}
+          placeholder="이름"
+          style={{
+            padding: "11px 12px", fontSize: 13, fontFamily: "inherit",
+            border: `1px solid ${p.hairline}`, background: p.panel, color: p.text, outline: "none",
+          }}
+        />
+        <textarea
+          value={text} onChange={e => setText(e.target.value)}
+          placeholder="축하의 한마디를 남겨주세요"
+          rows={3}
+          style={{
+            padding: "11px 12px", fontSize: 13, fontFamily: "inherit",
+            border: `1px solid ${p.hairline}`, background: p.panel, color: p.text,
+            outline: "none", resize: "none",
+          }}
+        />
+        <button
+          onClick={submit}
+          style={{
+            padding: "12px 0",
+            background: p.accent, color: p.onAccent,
+            border: "none", fontFamily: "inherit",
+            fontSize: 13, letterSpacing: "0.16em", cursor: "pointer",
+          }}
+        >메시지 남기기</button>
+      </div>
+      <div>
+        {msgs.map((m, i) => (
+          <div key={i} style={{
+            padding: "12px 0",
+            borderTop: i === 0 ? "none" : `1px solid ${p.hairline}`,
+          }}>
+            <div style={{
+              display: "flex", justifyContent: "space-between", alignItems: "baseline",
+              marginBottom: 4,
+            }}>
+              <span style={{ fontSize: 13, fontWeight: 500, color: p.text }}>{m.name}</span>
+              <span style={{ fontSize: 11, color: p.textMuted, letterSpacing: "0.06em" }}>{m.time}</span>
+            </div>
+            <div style={{ fontSize: 13, color: p.textSoft, lineHeight: 1.6, fontWeight: theme.bodyWeight }}>
+              {m.text}
+            </div>
+          </div>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* ShareFooter — 카카오톡/링크 공유 + 마무리                                  */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+function ShareFooter({ theme, data }) {
+  const p = theme.palette;
+  return (
+    <Section theme={theme} label="SHARE" title="청첩장 공유하기">
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 26 }}>
+        <ShareBtn theme={theme} icon="kakao" label="카카오톡 공유" />
+        <ShareBtn theme={theme} icon="link"  label="링크 복사" />
+      </div>
+      <Hairline theme={theme} my={4} />
+      <div style={{ textAlign: "center", marginTop: 20 }}>
+        <div style={{
+          fontSize: 16, fontWeight: 500, letterSpacing: "0.08em", color: p.text,
+        }}>
+          {data.groom.name} <span style={{ color: p.accent }}>&</span> {data.bride.name}
+        </div>
+        <div style={{ fontSize: 12, color: p.textMuted, marginTop: 8, letterSpacing: "0.1em" }}>
+          {data.date.dateText} · {data.venue.name}
+        </div>
+        <div style={{
+          marginTop: 22, fontSize: 11, color: p.textMuted, lineHeight: 1.8,
+          letterSpacing: "0.08em",
+        }}>
+          저희의 새로운 시작에<br/>마음을 더해 주셔서 감사합니다.
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+function ShareBtn({ theme, icon, label }) {
+  const p = theme.palette;
+  return (
+    <button style={{
+      display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+      padding: "12px 0",
+      border: `1px solid ${p.hairline}`,
+      background: "transparent",
+      color: p.textSoft,
+      fontSize: 12.5,
+      fontFamily: "inherit",
+      letterSpacing: "0.06em",
+      cursor: "pointer",
+    }}>
+      <ShareIcon kind={icon} color={p.accent} />
+      {label}
+    </button>
+  );
+}
+
+function ShareIcon({ kind, color }) {
+  if (kind === "kakao") {
+    return (
+      <svg width="16" height="16" viewBox="0 0 16 16">
+        <ellipse cx="8" cy="7" rx="6.5" ry="5" fill={color} />
+        <path d="M5.5 12 L7 10 L8 11 Z" fill={color} />
+      </svg>
+    );
+  }
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M6.5 9.5 L9.5 6.5" stroke={color} strokeWidth="1.4" strokeLinecap="round" />
+      <path d="M9 4 L11 2 Q14 2 14 5 L12 7" stroke={color} strokeWidth="1.4" strokeLinecap="round" fill="none" />
+      <path d="M7 9 L5 11 Q2 11 2 8 L4 6" stroke={color} strokeWidth="1.4" strokeLinecap="round" fill="none" />
+    </svg>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+/* MusicPlayer — floating                                                   */
+/* ──────────────────────────────────────────────────────────────────────── */
+
+function MusicPlayer({ theme, song }) {
+  const p = theme.palette;
+  const [on, setOn] = useState(false);
+  const audioRef = useRef(null);
+
+  const toggle = () => {
+    setOn(v => {
+      const next = !v;
+      const a = audioRef.current;
+      if (a && song.src) {
+        if (next) a.play().catch(() => {});
+        else a.pause();
+      }
+      return next;
+    });
+  };
+
+  return (
+    <div style={{
+      position: "absolute", top: 14, right: 14, zIndex: 10,
+      display: "flex", alignItems: "center", gap: 8,
+      background: p.panel,
+      border: `1px solid ${p.hairline}`,
+      padding: "6px 10px 6px 8px",
+      maxWidth: 200,
+    }}>
+      <button
+        onClick={toggle}
+        aria-label={on ? "음악 일시정지" : "음악 재생"}
+        style={{
+          width: 28, height: 28, border: "none", padding: 0,
+          background: p.accent, color: p.onAccent, cursor: "pointer",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          borderRadius: theme.style === "editorial" ? 0 : "50%",
+        }}
+      >
+        {on ? (
+          <svg width="10" height="10" viewBox="0 0 10 10"><rect x="1" y="1" width="3" height="8" fill={p.onAccent}/><rect x="6" y="1" width="3" height="8" fill={p.onAccent}/></svg>
+        ) : (
+          <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 1 L9 5 L2 9 Z" fill={p.onAccent}/></svg>
+        )}
+      </button>
+      <div style={{ minWidth: 0 }}>
+        <div style={{
+          fontSize: 11, fontWeight: 500, color: p.text,
+          whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+          letterSpacing: "0.02em",
+        }}>♪ {song.title}</div>
+        <div style={{
+          fontSize: 9, color: p.textMuted, marginTop: 1,
+          whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+        }}>{song.artist}</div>
+      </div>
+      {/* 실제 음원 파일이 있을 때만 audio 태그가 동작. song.src를 채워주세요. */}
+      <audio ref={audioRef} src={song.src || undefined} loop preload="none" />
+    </div>
+  );
+}
+
+/* expose to window */
+Object.assign(window, {
+  Hero, Greeting, People, DateInfo, NoWreath, Gallery,
+  Location, Rsvp, Account, Guestbook, ShareFooter, MusicPlayer,
+});
+
+  </script>
+
+  <script type="text/babel" data-presets="react">
+// app.jsx — 단일 시안 (C · 소프트 모노) 모바일청첩장
+// 폭죽 헤로 + 강조 RSVP 포함.
+// design canvas 대신, 데스크탑에서는 모바일 폭 카드로 중앙 정렬해 보여줍니다.
+
+function Invitation({ theme, data }) {
+  const p = theme.palette;
+  return (
+    <div
+      className="invite-root"
+      style={{
+        width: "100%",
+        background: p.bg,
+        color: p.text,
+        fontFamily: '"Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, sans-serif',
+        fontWeight: theme.bodyWeight,
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      <MusicPlayer theme={theme} song={data.song} />
+      <Reveal delay={0}><Hero theme={theme} data={data} /></Reveal>
+      <Reveal delay={60}><Greeting theme={theme} data={data} /></Reveal>
+      <Reveal delay={80}><People theme={theme} data={data} /></Reveal>
+      <Reveal delay={100}><DateInfo theme={theme} data={data} /></Reveal>
+      <Reveal delay={120}><NoWreath theme={theme} /></Reveal>
+      <Reveal delay={140}><Gallery theme={theme} /></Reveal>
+      <Reveal delay={160}><Location theme={theme} data={data} /></Reveal>
+      <Reveal delay={180}><Rsvp theme={theme} /></Reveal>
+      <Reveal delay={200}><Account theme={theme} data={data} /></Reveal>
+      <Reveal delay={220}><Guestbook theme={theme} /></Reveal>
+      <Reveal delay={240}><ShareFooter theme={theme} data={data} /></Reveal>
+    </div>
+  );
+}
+
+function Reveal({ delay = 0, children }) {
+  return (
+    <div className="reveal" style={{ animationDelay: `${delay}ms` }}>
+      {children}
+    </div>
+  );
+}
+
+function App() {
+  const data = window.WEDDING_DATA;
+  const theme = window.THEMES.find(t => t.id === "mono");
+
+  return (
+    <div className="page-frame">
+      <div className="invite-card">
+        <Invitation theme={theme} data={data} />
+      </div>
+      <footer className="page-foot">
+        모바일청첩장 미리보기 · 실제로는 휴대폰 한 화면 폭으로 열립니다
+      </footer>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+
+  </script>
+</body>
+</html>
