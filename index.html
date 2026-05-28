@@ -18,8 +18,8 @@
       padding: 0;
       font-family: "Pretendard Variable", Pretendard, -apple-system,
         BlinkMacSystemFont, system-ui, sans-serif;
-      background: #07060C;
-      color: #F4F0E6;
+      background: #FFE3EE;
+      color: #4A2235;
       -webkit-font-smoothing: antialiased;
     }
 
@@ -33,30 +33,30 @@
       align-items: center;
       padding: 28px 16px 60px;
       background:
-        radial-gradient(ellipse at 50% -10%, rgba(217,185,138,0.10) 0%, transparent 45%),
-        radial-gradient(ellipse at 80% 40%, rgba(120,90,160,0.06) 0%, transparent 50%),
-        #07060C;
+        radial-gradient(ellipse at 50% -10%, rgba(255,255,255,0.50) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 40%, rgba(255,179,209,0.50) 0%, transparent 55%),
+        linear-gradient(180deg, #FFB3D1 0%, #FF9AC0 50%, #FFB3D1 100%);
     }
     .invite-card {
       width: 100%;
       max-width: 440px;
-      background: #0C0B12;
+      background: #FFF0F6;
       box-shadow:
-        0 30px 80px rgba(0, 0, 0, 0.6),
-        0 8px 24px rgba(0, 0, 0, 0.5),
-        0 0 0 1px rgba(217, 185, 138, 0.08);
+        0 30px 80px rgba(194, 94, 141, 0.25),
+        0 8px 24px rgba(194, 94, 141, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.55);
       overflow: hidden;
     }
     .page-foot {
       margin-top: 22px;
-      color: rgba(244, 240, 230, 0.30);
+      color: rgba(74, 34, 53, 0.55);
       font-size: 11px;
       letter-spacing: 0.16em;
     }
 
     /* 모바일에서는 카드 그림자/패딩 제거 */
     @media (max-width: 480px) {
-      .page-frame { padding: 0; background: #0C0B12; }
+      .page-frame { padding: 0; background: #FFF0F6; }
       .invite-card { box-shadow: none; max-width: 100%; }
       .page-foot { display: none; }
     }
@@ -78,21 +78,21 @@
       100% { opacity: 0.45; }
     }
 
-    /* image-slot placeholder — 다크 톤에 맞춤 */
+    /* image-slot placeholder — 더스티 로즈 톤 */
     image-slot {
-      background: rgba(244, 240, 230, 0.04);
+      background: rgba(74, 34, 53, 0.05);
     }
     image-slot::part(placeholder) {
       font-family: "Pretendard Variable", Pretendard, sans-serif;
       font-size: 11px;
       letter-spacing: 0.08em;
-      color: rgba(244, 240, 230, 0.50);
+      color: rgba(74, 34, 53, 0.55);
     }
 
-    /* 입력 필드 placeholder — 다크 톤 */
+    /* 입력 필드 placeholder — 더스티 로즈 톤 */
     input::placeholder,
     textarea::placeholder {
-      color: rgba(244, 240, 230, 0.35);
+      color: rgba(74, 34, 53, 0.40);
     }
   </style>
 </head>
@@ -101,14 +101,14 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
       <defs>
         <radialGradient id="bg" cx="50%" cy="40%" r="70%">
-          <stop offset="0%" stop-color="#25221E"/>
-          <stop offset="60%" stop-color="#0F0E14"/>
-          <stop offset="100%" stop-color="#07060C"/>
+          <stop offset="0%" stop-color="#FFC2D8"/>
+          <stop offset="60%" stop-color="#FF6FA8"/>
+          <stop offset="100%" stop-color="#C2185B"/>
         </radialGradient>
       </defs>
       <rect width="400" height="400" fill="url(#bg)"/>
       <!-- sparkles -->
-      <g fill="#D9B98A">
+      <g fill="#FFFFFF">
         <circle cx="100" cy="90"  r="2" opacity="0.9"/>
         <circle cx="300" cy="110" r="1.6" opacity="0.7"/>
         <circle cx="320" cy="280" r="2" opacity="0.8"/>
@@ -116,7 +116,7 @@
         <circle cx="200" cy="60"  r="1.6" opacity="0.75"/>
       </g>
       <!-- firework burst -->
-      <g stroke="#F0D6A0" stroke-linecap="round" stroke-width="1.4" opacity="0.85">
+      <g stroke="#FFFFFF" stroke-linecap="round" stroke-width="1.4" opacity="0.9">
         <line x1="200" y1="170" x2="200" y2="130"/>
         <line x1="200" y1="170" x2="240" y2="150"/>
         <line x1="200" y1="170" x2="160" y2="150"/>
@@ -125,17 +125,17 @@
         <line x1="200" y1="170" x2="225" y2="210"/>
         <line x1="200" y1="170" x2="175" y2="210"/>
       </g>
-      <circle cx="200" cy="170" r="3" fill="#FFD9A0"/>
+      <circle cx="200" cy="170" r="3" fill="#FFFFFF"/>
       <!-- ampersand initials -->
       <text x="200" y="265" text-anchor="middle"
         font-family="Georgia, serif" font-size="44"
-        fill="#F4F0E6" letter-spacing="6">M &amp; S</text>
+        fill="#FFFFFF" letter-spacing="6">M &amp; S</text>
       <text x="200" y="305" text-anchor="middle"
         font-family="sans-serif" font-size="11"
-        fill="#D9B98A" letter-spacing="6">WEDDING INVITATION</text>
+        fill="#FFE5EC" letter-spacing="6">WEDDING INVITATION</text>
       <text x="200" y="335" text-anchor="middle"
         font-family="sans-serif" font-size="10"
-        fill="rgba(244,240,230,0.5)" letter-spacing="4">2027 · 04 · 17</text>
+        fill="rgba(255,255,255,0.65)" letter-spacing="4">2027 · 04 · 17</text>
     </svg>
   </template>
 
@@ -939,22 +939,22 @@ const THEMES = [
   },
   {
     id: "mono",
-    name: "C · 나이트 에디토리얼",
-    sub: "딥 나이트 + 연한 골드, 통일된 다크 에디토리얼",
+    name: "C · 소프트 베이비 핑크",
+    sub: "라이트 핑크 + 베이비 핑크 (#FFB3D1) 알터네이트",
     palette: {
-      bg:           "#0C0B12",
-      panel:        "#13121A",
-      panelAlt:     "#191825",
-      text:         "#F4F0E6",
-      textSoft:     "rgba(244,240,230,0.78)",
-      textMuted:    "rgba(244,240,230,0.48)",
-      accent:       "#D9B98A",
-      accentDeep:   "#F0D6A0",
-      onAccent:     "#13121A",
-      hairline:     "rgba(244,240,230,0.12)",
-      stroke:       "rgba(244,240,230,0.26)",
-      noticeBg:     "rgba(217,185,138,0.08)",
-      noticeBorder: "#D9B98A",
+      bg:           "#FFE3EE",   // 페이지 바깥 (웜 핑크 워시)
+      panel:        "#FFF0F6",   // 섹션 A (아주 연한 핑크)
+      panelAlt:     "#FFB3D1",   // 섹션 B (사용자 지정 베이비 핑크)
+      text:         "#4A2235",   // 본문 텍스트 (딥 멀버리)
+      textSoft:     "rgba(74,34,53,0.78)",
+      textMuted:    "rgba(74,34,53,0.55)",
+      accent:       "#E07AA8",   // 액센트 (베이비 핑크의 진한 버전)
+      accentDeep:   "#B85A88",
+      onAccent:     "#FFFFFF",
+      hairline:     "rgba(74,34,53,0.16)",
+      stroke:       "rgba(74,34,53,0.32)",
+      noticeBg:     "#FFF0F6",
+      noticeBorder: "#E07AA8",
     },
     headingWeight: 600,
     headingTracking: "0.22em",
@@ -1088,12 +1088,12 @@ function Fireworks() {
     ro.observe(parent);
 
     const COLORS = [
-      "#F5E6C8", // warm ivory
-      "#FFD9A0", // soft gold
-      "#FFB874", // amber
-      "#FFFFFF", // white spark
-      "#FFC8B0", // peach
-      "#E8C690", // champagne
+      "#FFFFFF", // 메인 화이트
+      "#FFFFFF",
+      "#FFF5F8", // 아주 연한 핑크 화이트
+      "#FFE5EC", // 크림 핑크
+      "#FFD9A0", // 소프트 골드 액센트
+      "#FFC2D8", // 라이트 핑크
     ];
 
     const rockets = [];
@@ -1145,9 +1145,9 @@ function Fireworks() {
 
     const loop = () => {
       if (!running) return;
-      // 잔상 효과를 위한 약한 검정 페이드
-      ctx.globalCompositeOperation = "source-over";
-      ctx.fillStyle = "rgba(8, 8, 18, 0.22)";
+      // 잔상 효과를 위한 약한 페이드 — 배경 핑크가 비치도록 거의 투명한 핑크 톤으로
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.fillStyle = "rgba(0, 0, 0, 0.10)";
       ctx.fillRect(0, 0, W, H);
 
       // 별빛 같은 합산 블렌딩
@@ -1254,7 +1254,7 @@ function Stars() {
     <>
       <div style={{
         position: "absolute", inset: 0, zIndex: 0,
-        background: "radial-gradient(ellipse at 50% 30%, rgba(220,200,170,0.10) 0%, transparent 55%), radial-gradient(ellipse at 80% 70%, rgba(150,140,200,0.08) 0%, transparent 50%)",
+        background: "radial-gradient(ellipse at 50% 30%, rgba(255,210,225,0.18) 0%, transparent 55%), radial-gradient(ellipse at 80% 70%, rgba(255,180,210,0.12) 0%, transparent 50%)",
         pointerEvents: "none",
       }} />
       <div style={{
@@ -1291,7 +1291,7 @@ function Hero({ theme, data }) {
       <section style={{
         position: "relative",
         padding: "56px 28px 72px",
-        background: `linear-gradient(180deg, #07060C 0%, ${p.bg} 55%, ${p.panelAlt} 100%)`,
+        background: `linear-gradient(180deg, #C25E8D 0%, #E07AA8 30%, #FF9AC0 60%, ${p.panelAlt} 85%, ${p.panel} 100%)`,
         color: p.text,
         textAlign: "center",
         overflow: "hidden",
@@ -1305,7 +1305,7 @@ function Hero({ theme, data }) {
         <div style={{ position: "relative", zIndex: 2 }}>
           <div style={{
             fontSize: 11, letterSpacing: "0.45em",
-            color: "rgba(244,240,230,0.65)", marginBottom: 30,
+            color: "rgba(255,255,255,0.78)", marginBottom: 30,
             fontWeight: 500,
           }}>
             WE'RE GETTING MARRIED
@@ -1314,9 +1314,9 @@ function Hero({ theme, data }) {
           <div style={{
             fontSize: 76, fontWeight: 200, lineHeight: 1,
             letterSpacing: "0.04em",
-            color: "#F4F0E6",
+            color: "#FFFFFF",
             fontVariantNumeric: "lining-nums",
-            textShadow: "0 0 30px rgba(255, 220, 160, 0.25)",
+            textShadow: "0 0 28px rgba(255, 180, 210, 0.55)",
           }}>
             {String(date.m).padStart(2, "0")}
             <span style={{ opacity: 0.4 }}>.</span>
@@ -1324,16 +1324,16 @@ function Hero({ theme, data }) {
           </div>
           <div style={{
             fontSize: 11, letterSpacing: "0.4em",
-            color: "rgba(244,240,230,0.6)", marginTop: 12,
+            color: "rgba(255,255,255,0.78)", marginTop: 12,
           }}>
             {date.weekday} · {date.y}
           </div>
 
           <div style={{
             margin: "36px 14px 32px",
-            border: "1px solid rgba(244,240,230,0.2)",
+            border: "1px solid rgba(255,255,255,0.45)",
             padding: 8,
-            background: "rgba(10,10,20,0.35)",
+            background: "rgba(255,255,255,0.12)",
             backdropFilter: "blur(2px)",
           }}>
             <image-slot
@@ -1350,15 +1350,15 @@ function Hero({ theme, data }) {
           <div style={{
             fontSize: 24, fontWeight: 400,
             letterSpacing: "0.08em", lineHeight: 1.4,
-            color: "#F4F0E6",
+            color: p.text,
           }}>
             {groom.name}
-            <span style={{ margin: "0 14px", color: "#D9B98A", fontWeight: 200 }}>&amp;</span>
+            <span style={{ margin: "0 14px", color: p.accent, fontWeight: 500 }}>&amp;</span>
             {bride.name}
           </div>
           <div style={{
             marginTop: 14, fontSize: 12,
-            color: "rgba(244,240,230,0.6)", letterSpacing: "0.22em",
+            color: p.textSoft, letterSpacing: "0.22em",
           }}>
             {venue.name} · {venue.hall}
           </div>
@@ -1949,12 +1949,12 @@ function RsvpEmphasized({ theme }) {
   const [attend, setAttend] = useState(null);
   const [meal, setMeal] = useState("식사 함");
 
-  // 다크 통일 테마 — 골드 프레임으로 강조
-  const cardBg = "linear-gradient(180deg, #1A1825 0%, #131220 100%)";
-  const cardText = "#F4F0E6";
-  const muted = "rgba(244,240,230,0.55)";
-  const strokeStrong = "rgba(244,240,230,0.42)";
-  const gold = "#D9B98A";
+  // 소프트 핑크 카드 + 골드 프레임
+  const cardBg = "linear-gradient(180deg, #E07AA8 0%, #C25E8D 100%)";
+  const cardText = "#FFFFFF";
+  const muted = "rgba(255,255,255,0.78)";
+  const strokeStrong = "rgba(255,255,255,0.55)";
+  const gold = "#FFD9A0";
 
   return (
     <section style={{
@@ -1968,12 +1968,12 @@ function RsvpEmphasized({ theme }) {
         display: "flex", alignItems: "center", justifyContent: "center",
         gap: 12, padding: "16px 0 22px",
       }}>
-        <div style={{ flex: 1, height: 1, background: "rgba(217,185,138,0.35)", maxWidth: 60 }} />
+        <div style={{ flex: 1, height: 1, background: "rgba(255,217,160,0.55)", maxWidth: 60 }} />
         <div style={{
           fontSize: 10, letterSpacing: "0.5em",
           color: gold, fontWeight: 600,
         }}>R · S · V · P</div>
-        <div style={{ flex: 1, height: 1, background: "rgba(217,185,138,0.35)", maxWidth: 60 }} />
+        <div style={{ flex: 1, height: 1, background: "rgba(255,217,160,0.55)", maxWidth: 60 }} />
       </div>
 
       <div style={{
@@ -1984,9 +1984,9 @@ function RsvpEmphasized({ theme }) {
         overflow: "hidden",
         border: `1px solid ${gold}`,
         boxShadow:
-          "0 0 0 6px rgba(217,185,138,0.06)," +
-          "0 22px 50px rgba(0,0,0,0.55)," +
-          "inset 0 0 40px rgba(217,185,138,0.04)",
+          "0 0 0 6px rgba(255,217,160,0.08)," +
+          "0 22px 50px rgba(194,94,141,0.30)," +
+          "inset 0 0 40px rgba(255,217,160,0.08)",
       }}>
         {/* 코너 마커 */}
         <CornerTicks color={strokeStrong} />
@@ -2057,7 +2057,7 @@ function RsvpEmphasized({ theme }) {
               marginTop: 6,
               padding: "18px 0",
               background: gold,
-              color: "#141318",
+              color: "#B85A88",
               border: "none",
               fontSize: 14,
               fontFamily: "inherit",
@@ -2066,7 +2066,7 @@ function RsvpEmphasized({ theme }) {
               cursor: "pointer",
               transition: "transform .15s, background .15s",
             }}
-            onMouseEnter={e => { e.currentTarget.style.background = "#F0D6A0"; }}
+            onMouseEnter={e => { e.currentTarget.style.background = "#FFE8BC"; }}
             onMouseLeave={e => { e.currentTarget.style.background = gold; }}
           >전 달 하 기 →</button>
 
@@ -2115,8 +2115,8 @@ function FieldGroup({ label, muted, children }) {
 }
 
 function DarkToggle({ on, onClick, children, strong, small }) {
-  const gold = "#D9B98A";
-  const cardText = "#F4F0E6";
+  const gold = "#FFD9A0";
+  const cardText = "#FFFFFF";
   return (
     <button
       onClick={onClick}
@@ -2125,9 +2125,9 @@ function DarkToggle({ on, onClick, children, strong, small }) {
         fontSize: small ? 12 : 13,
         fontFamily: "inherit",
         fontWeight: strong && on ? 600 : 400,
-        border: `1px solid ${on ? gold : "rgba(244,240,230,0.22)"}`,
-        background: on ? (strong ? gold : "rgba(217,185,138,0.18)") : "transparent",
-        color: on ? (strong ? "#141318" : cardText) : "rgba(244,240,230,0.7)",
+        border: `1px solid ${on ? gold : "rgba(255,255,255,0.42)"}`,
+        background: on ? (strong ? gold : "rgba(255,255,255,0.18)") : "transparent",
+        color: on ? (strong ? "#B85A88" : cardText) : "rgba(255,255,255,0.85)",
         cursor: "pointer",
         letterSpacing: "0.12em",
         flex: 1,
@@ -2145,9 +2145,9 @@ function DarkInput({ placeholder }) {
         padding: "13px 14px",
         fontSize: 13,
         fontFamily: "inherit",
-        border: "1px solid rgba(244,240,230,0.22)",
-        background: "rgba(255,255,255,0.04)",
-        color: "#F4F0E6",
+        border: "1px solid rgba(255,255,255,0.42)",
+        background: "rgba(255,255,255,0.12)",
+        color: "#FFFFFF",
         outline: "none",
         letterSpacing: "0.02em",
       }}
